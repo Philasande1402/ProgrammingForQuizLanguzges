@@ -10,7 +10,7 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping("addQuiz")
+    @RequestMapping("/addQuiz")
     public String addQuiz(){
         return "addQuiz";
     }

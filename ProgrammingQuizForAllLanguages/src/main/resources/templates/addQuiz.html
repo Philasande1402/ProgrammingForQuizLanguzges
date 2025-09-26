@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Quiz Question</title>
+    <title>Quiz Admin Panel</title>
     <style>
         * {
             margin: 0;
@@ -20,37 +20,56 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             padding: 40px;
-            margin: 20px 0;
+            width: 100%;
+            max-width: 800px;
         }
 
-        .header {
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2d3748;
             text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #1e3a8a;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #64748b;
-            font-size: 1.1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
@@ -58,115 +77,85 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #2d3748;
-        }
-
-        input[type="text"], select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus, select:focus {
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: white;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
         }
 
         .options-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
         }
 
-        .option-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        .option-group input[type="radio"] {
-            width: 18px;
-            height: 18px;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit {
+        .submit-btn {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
-        }
-
-        .btn-reset {
-            background: #e2e8f0;
-            color: #4a5568;
-        }
-
-        .btn-back {
-            background: #38a169;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
             font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
         }
 
-        .success {
-            background-color: #c6f6d5;
-            color: #2d784e;
-            border: 1px solid #9ae6b4;
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
         }
 
-        .error {
-            background-color: #fed7d7;
-            color: #c53030;
-            border: 1px solid #feb2b2;
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
             .options-container {
                 grid-template-columns: 1fr;
             }
 
-            .button-group {
-                flex-direction: column;
-                gap: 10px;
+            .form-row {
+                grid-template-columns: 1fr;
             }
 
-            .btn {
-                width: 100%;
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -174,74 +163,86 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>Add New Quiz Question</h1>
-        <p>Create a new programming quiz question for the database</p>
+        <h1>Quiz Admin Panel</h1>
+        <p>Add new quiz questions to the database</p>
     </div>
 
-    <!-- Success/Error Messages -->
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
-    <div th:if="${errorMessage}" class="message error" th:text="${errorMessage}"></div>
+    <div class="form-container">
+        <h2 class="form-title">Add New Quiz Question</h2>
 
-    <!-- Quiz Form -->
-    <form th:action="@{/admin/add-quiz}" th:object="${quiz}" method="post">
-        <div class="form-group">
-            <label for="questionTitle">Question Title</label>
-            <input type="text" id="questionTitle" th:field="*{questionTitle}" placeholder="Enter the quiz question" required>
-        </div>
+        <form id="quizForm">
+            <div class="form-group">
+                <label for="questionTitle">Question Title</label>
+                <textarea id="questionTitle" name="questionTitle" placeholder="Enter the quiz question..." required></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="category">Category</label>
-            <select id="category" th:field="*{category}" required>
-                <option value="">Select a category</option>
-                <option value="Java">Java</option>
-                <option value="Python">Python</option>
-                <option value="JavaScript">JavaScript</option>
-                <option value="C++">C++</option>
-                <option value="SQL">SQL</option>
-                <option value="HTML/CSS">HTML/CSS</option>
-                <option value="Data Structures">Data Structures</option>
-                <option value="Algorithms">Algorithms</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="difficultyLevel">Difficulty Level</label>
-            <select id="difficultyLevel" th:field="*{difficultyLevel}" required>
-                <option value="">Select difficulty</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Options</label>
-            <div class="options-container">
-                <div class="option-group">
-                    <input type="radio" id="option1" name="rightAnswer" th:value="Option1" required>
-                    <input type="text" th:field="*{option1}" placeholder="Option 1" required>
-                </div>
-                <div class="option-group">
-                    <input type="radio" id="option2" name="rightAnswer" th:value="Option2">
-                    <input type="text" th:field="*{option2}" placeholder="Option 2" required>
-                </div>
-                <div class="option-group">
-                    <input type="radio" id="option3" name="rightAnswer" th:value="Option3">
-                    <input type="text" th:field="*{option3}" placeholder="Option 3" required>
-                </div>
-                <div class="option-group">
-                    <input type="radio" id="option4" name="rightAnswer" th:value="Option4">
-                    <input type="text" th:field="*{option4}" placeholder="Option 4" required>
+            <div class="form-group">
+                <label>Options</label>
+                <div class="options-container">
+                    <div>
+                        <label for="option1">Option 1</label>
+                        <input type="text" id="option1" name="option1" placeholder="First option" required>
+                    </div>
+                    <div>
+                        <label for="option2">Option 2</label>
+                        <input type="text" id="option2" name="option2" placeholder="Second option" required>
+                    </div>
+                    <div>
+                        <label for="option3">Option 3</label>
+                        <input type="text" id="option3" name="option3" placeholder="Third option" required>
+                    </div>
+                    <div>
+                        <label for="option4">Option 4</label>
+                        <input type="text" id="option4" name="option4" placeholder="Fourth option" required>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="button-group">
-            <a th:href="@{/admin}" class="btn btn-back">Back to Admin</a>
-            <button type="reset" class="btn btn-reset">Reset Form</button>
-            <button type="submit" class="btn btn-submit">Add Question</button>
-        </div>
-    </form>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="rightAnswer">Right Answer</label>
+                    <select id="rightAnswer" name="rightAnswer" required>
+                        <option value="">Select the correct answer</option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                        <option value="option4">Option 4</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficultyLevel">Difficulty Level</label>
+                    <select id="difficultyLevel" name="difficultyLevel" required>
+                        <option value="">Select difficulty level</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a programming language</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="C++">C++</option>
+                    <option value="C#">C#</option>
+                    <option value="PHP">PHP</option>
+                    <option value="Swift">Swift</option>
+                    <option value="Go">Go</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">Add Question</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Quiz Management System | Admin Panel</p>
+    </div>
 </div>
 </body>
 </html>
