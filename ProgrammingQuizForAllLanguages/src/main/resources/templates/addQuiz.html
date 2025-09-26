@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Quiz Question</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin: 20px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .btn-reset {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-back {
+            background: #38a169;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success {
+            background-color: #c6f6d5;
+            color: #2d784e;
+            border: 1px solid #9ae6b4;
+        }
+
+        .error {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Add New Quiz Question</h1>
+        <p>Create a new programming quiz question for the database</p>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="message error" th:text="${errorMessage}"></div>
+
+    <!-- Quiz Form -->
+    <form th:action="@{/admin/add-quiz}" th:object="${quiz}" method="post">
+        <div class="form-group">
+            <label for="questionTitle">Question Title</label>
+            <input type="text" id="questionTitle" th:field="*{questionTitle}" placeholder="Enter the quiz question" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" th:field="*{category}" required>
+                <option value="">Select a category</option>
+                <option value="Java">Java</option>
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="C++">C++</option>
+                <option value="SQL">SQL</option>
+                <option value="HTML/CSS">HTML/CSS</option>
+                <option value="Data Structures">Data Structures</option>
+                <option value="Algorithms">Algorithms</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="difficultyLevel">Difficulty Level</label>
+            <select id="difficultyLevel" th:field="*{difficultyLevel}" required>
+                <option value="">Select difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Options</label>
+            <div class="options-container">
+                <div class="option-group">
+                    <input type="radio" id="option1" name="rightAnswer" th:value="Option1" required>
+                    <input type="text" th:field="*{option1}" placeholder="Option 1" required>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="option2" name="rightAnswer" th:value="Option2">
+                    <input type="text" th:field="*{option2}" placeholder="Option 2" required>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="option3" name="rightAnswer" th:value="Option3">
+                    <input type="text" th:field="*{option3}" placeholder="Option 3" required>
+                </div>
+                <div class="option-group">
+                    <input type="radio" id="option4" name="rightAnswer" th:value="Option4">
+                    <input type="text" th:field="*{option4}" placeholder="Option 4" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <a th:href="@{/admin}" class="btn btn-back">Back to Admin</a>
+            <button type="reset" class="btn btn-reset">Reset Form</button>
+            <button type="submit" class="btn btn-submit">Add Question</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

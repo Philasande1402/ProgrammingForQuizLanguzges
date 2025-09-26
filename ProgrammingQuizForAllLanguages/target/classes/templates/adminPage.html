@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz for Programming Languages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .crud-operations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px 0;
+        }
+
+        .crud-button {
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 180px;
+            flex: 1;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .crud-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .crud-button:hover::before {
+            left: 100%;
+        }
+
+        .crud-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .crud-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .crud-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .crud-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Specific button colors */
+        .add-btn {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+        }
+
+        .get-btn {
+            background: linear-gradient(135deg, #3182ce, #2c5aa0);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, #d69e2e, #b7791f);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 20px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .crud-operations {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .crud-button {
+                min-width: 250px;
+                padding: 25px 20px;
+            }
+
+            .crud-icon {
+                font-size: 2.2rem;
+            }
+
+            .crud-text {
+                font-size: 1.2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .crud-button {
+                min-width: 200px;
+                padding: 20px 15px;
+            }
+
+            .crud-icon {
+                font-size: 2rem;
+            }
+
+            .crud-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<button class="back-btn" onclick="window.history.back()">←</button>
+
+<div class="container">
+    <div class="header">
+        <h1>Quiz for Programming Languages</h1>
+        <p>Manage quiz questions and data</p>
+    </div>
+
+    <!-- CRUD Operations Section -->
+    <div class="crud-operations">
+        <a th:href="@{/addQuiz}">
+            <button class="crud-button add-btn">
+                <span class="crud-icon">➕</span>
+                <span class="crud-text">Add Question</span>
+            </button>
+        </a>
+
+        <button class="crud-button get-btn">
+            <span class="crud-icon">📋</span>
+            <span class="crud-text">Get All Questions</span>
+        </button>
+
+        <button class="crud-button delete-btn">
+            <span class="crud-icon">🗑️</span>
+            <span class="crud-text">Delete Question</span>
+        </button>
+
+        <button class="crud-button update-btn">
+            <span class="crud-icon">✏️</span>
+            <span class="crud-text">Update Question</span>
+        </button>
+    </div>
+
+    <div class="footer">
+        <p>Select an operation to manage quiz questions</p>
+    </div>
+</div>
+
+<script>
+    // Add interactive effects for the CRUD buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        const crudButtons = document.querySelectorAll('.crud-button');
+
+        crudButtons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05) translateY(-5px)';
+            });
+
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1) translateY(0)';
+            });
+        });
+
+        // Add functionality to buttons (placeholder for now)
+        crudButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.querySelector('.crud-text').textContent;
+                alert(`You clicked: ${action}`);
+                // Here you would add the actual functionality for each CRUD operation
+            });
+        });
+    });
+</script>
+</body>
+</html>

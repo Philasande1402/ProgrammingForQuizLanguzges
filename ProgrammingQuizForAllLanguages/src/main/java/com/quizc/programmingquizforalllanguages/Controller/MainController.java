@@ -1,0 +1,17 @@
+package com.quizc.programmingquizforalllanguages.Controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class MainController {
+    @RequestMapping("/")
+    public String index(){
+        return "index";
+    }
+
+    @RequestMapping("addQuiz")
+    public String addQuiz(){
+        return "addQuiz";
+    }
+}
