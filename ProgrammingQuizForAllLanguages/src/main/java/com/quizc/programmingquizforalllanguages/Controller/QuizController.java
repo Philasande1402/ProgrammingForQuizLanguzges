@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,7 +21,16 @@ public class QuizController {
     @PostMapping("save")
     public String saveQuestion(@ModelAttribute Quiz quiz) {
         quizService.save(quiz);
-        return "redirect:/success";
+        return "redirect:/getAllQuiz";
+    }
+
+    @GetMapping("getAllQuiz")
+    public ModelAndView getAllQuiz(){
+        List<Quiz> list = quizService.getAllQuiz();
+        ModelAndView m = new ModelAndView();
+        m.addObject("quiz",list);
+        m.setViewName("getAllQuiz");
+        return m;
     }
 
 }
