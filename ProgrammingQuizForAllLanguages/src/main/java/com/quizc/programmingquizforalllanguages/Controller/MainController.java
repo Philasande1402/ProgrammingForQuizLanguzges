@@ -14,4 +14,9 @@ public class MainController {
     public String addQuiz(){
         return "addQuiz";
     }
+
+    @RequestMapping("/success")
+    public String success(){
+        return "success";
+    }
 }

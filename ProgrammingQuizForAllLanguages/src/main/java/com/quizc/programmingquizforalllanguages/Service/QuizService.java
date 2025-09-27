@@ -11,7 +11,7 @@ public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
-    public void addQuiz(Quiz quiz){
+    public void save(Quiz quiz){
         quizRepository.save(quiz);
     }
 }

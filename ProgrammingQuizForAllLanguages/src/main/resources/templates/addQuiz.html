@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -170,7 +170,7 @@
     <div class="form-container">
         <h2 class="form-title">Add New Quiz Question</h2>
 
-        <form id="quizForm">
+        <form id="quizForm" th:action="@{/save}" method="POST">
             <div class="form-group">
                 <label for="questionTitle">Question Title</label>
                 <textarea id="questionTitle" name="questionTitle" placeholder="Enter the quiz question..." required></textarea>
