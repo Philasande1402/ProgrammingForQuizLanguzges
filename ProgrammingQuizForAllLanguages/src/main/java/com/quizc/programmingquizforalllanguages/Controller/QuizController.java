@@ -48,11 +48,19 @@ public class QuizController {
                                  @ModelAttribute("quiz") Quiz quiz,
                                  BindingResult result) {
         if (result.hasErrors()) {
-            return "updateDetails"; // Return back to form if there are errors
+            return "updateDetails";
         }
-        quiz.setId(id); // Ensure the ID is set
-        quizService.save(quiz); // Update the employee
-        return "redirect:/getAllQuiz"; // Redirect to employee list or success page
+        quiz.setId(id);
+        quizService.save(quiz);
+        return "redirect:/getAllQuiz";
+    }
+
+    //Delete method
+    @RequestMapping("/delete_quiz/{id}")
+    public String deleteById(@PathVariable Long id){
+        quizService.deleteById(id);
+
+        return "redirect:/getAllQuiz";
     }
 
 }
