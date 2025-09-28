@@ -21,4 +21,8 @@ public class QuizService {
     public List<Quiz> getAllQuiz(){
         return  quizRepository.findAll();
     }
+
+    public Quiz findById(Long id){
+        return  quizRepository.findById(id).get();
+    }
 }

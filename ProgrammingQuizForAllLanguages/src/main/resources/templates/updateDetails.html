@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Quiz page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2d3748;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: white;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Programming Quiz Management System</h1>
+        <p>Update quiz questions and manage your programming quizzes</p>
+    </div>
+
+    <div class="form-container">
+        <h2 class="form-title">Edit Quiz Question</h2>
+        <form id="quizForm"
+              th:action="@{/updateDetails/{id}(id=${quiz.id})}"
+              th:object="${quiz}"
+              method="POST">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="questionTitle">Question Title</label>
+                <textarea id="questionTitle" th:field="*{questionTitle}" class="form-control" required placeholder="Enter your question here..."></textarea>
+            </div>
+
+            <div class="options-container">
+                <div class="form-group">
+                    <label for="option1">Option 1</label>
+                    <input type="text" id="option1" th:field="*{option1}" class="form-control" required placeholder="Enter option 1">
+                </div>
+
+                <div class="form-group">
+                    <label for="option2">Option 2</label>
+                    <input type="text" id="option2" th:field="*{option2}" class="form-control" required placeholder="Enter option 2">
+                </div>
+
+                <div class="form-group">
+                    <label for="option3">Option 3</label>
+                    <input type="text" id="option3" th:field="*{option3}" class="form-control" required placeholder="Enter option 3">
+                </div>
+
+                <div class="form-group">
+                    <label for="option4">Option 4</label>
+                    <input type="text" id="option4" th:field="*{option4}" class="form-control" required placeholder="Enter option 4">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="rightAnswer">Right Answer</label>
+                    <select id="rightAnswer" th:field="*{rightAnswer}" class="form-control" required>
+                        <option value="">Select correct answer</option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                        <option value="option4">Option 4</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficultyLevel">Difficulty Level</label>
+                    <select id="difficultyLevel" th:field="*{difficultyLevel}" class="form-control" required>
+                        <option value="">Select difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" th:field="*{category}" class="form-control" required placeholder="e.g., Java, Python, JavaScript">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Update Quiz Question</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>Programming Quiz Management System &copy; 2025 | Philasande Valentine Nkosi</p>
+    </div>
+</div>
+</body>
+</html>

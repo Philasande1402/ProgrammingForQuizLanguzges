@@ -19,4 +19,9 @@ public class MainController {
     public String success(){
         return "success";
     }
+
+    @RequestMapping("/updateDetails")
+    public String updateDetails(){
+        return "updateDetails";
+    }
 }
