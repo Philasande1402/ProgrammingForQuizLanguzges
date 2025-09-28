@@ -24,4 +24,9 @@ public class MainController {
     public String updateDetails(){
         return "updateDetails";
     }
+
+    @RequestMapping("searchByCategory")
+    public String searchByCategory(){
+        return "searchByCategory";
+    }
 }

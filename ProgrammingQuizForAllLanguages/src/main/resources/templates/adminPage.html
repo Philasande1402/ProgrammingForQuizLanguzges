@@ -152,8 +152,8 @@
             background: linear-gradient(135deg, #3182ce, #2c5aa0);
         }
 
-        .delete-btn {
-            background: linear-gradient(135deg, #e53e3e, #c53030);
+        .search-btn {
+            background: linear-gradient(135deg, #805ad5, #6b46c1);
         }
 
         .update-btn {
@@ -233,16 +233,19 @@
         </a>
 
         <a th:href="@{/getAllQuiz}" style="text-decoration: none;">
-        <button class="crud-button get-btn">
-            <span class="crud-icon">📋</span>
-            <span class="crud-text">Get All Questions</span>
+            <button class="crud-button get-btn">
+                <span class="crud-icon">📋</span>
+                <span class="crud-text">Get All Questions</span>
+            </button>
+        </a>
+
+        <a th:href="searchByCategory" style="text-decoration: none;">
+        <button class="crud-button search-btn">
+            <span class="crud-icon">🔍</span>
+            <span class="crud-text">Search by Category</span>
         </button>
         </a>
 
-        <button class="crud-button delete-btn">
-            <span class="crud-icon">🗑️</span>
-            <span class="crud-text">Delete Question</span>
-        </button>
 
         <button class="crud-button update-btn">
             <span class="crud-icon">✏️</span>
