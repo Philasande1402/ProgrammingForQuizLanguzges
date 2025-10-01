@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Questions by Category</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Your existing CSS styles remain the same */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +18,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             padding: 20px;
             position: relative;
@@ -42,6 +41,7 @@
             color: white;
             font-size: 1.2rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
         }
 
         .back-btn:hover {
@@ -56,6 +56,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 40px;
         }
 
         .header {
@@ -85,6 +86,8 @@
             padding: 15px;
             border-radius: 10px;
             backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 800px;
         }
 
         /* Table styles */
@@ -232,6 +235,8 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            border: none;
+            cursor: pointer;
         }
 
         .btn-edit {
@@ -259,11 +264,24 @@
             color: white;
             margin-top: 20px;
             padding: 12px 25px;
+            text-decoration: none;
         }
 
         .btn-back:hover {
             background-color: #6b46c1;
             transform: translateY(-2px);
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
         }
 
         footer {
@@ -299,6 +317,7 @@
                 position: static;
                 transform: none;
                 margin-left: 10px;
+                content: "✓ Correct";
             }
         }
 
@@ -320,6 +339,10 @@
             .id-cell {
                 min-width: 50px;
             }
+
+            .container {
+                margin-top: 60px;
+            }
         }
     </style>
 </head>
@@ -332,12 +355,15 @@
         <p>Search Results</p>
     </div>
 
-    <div class="results-info" th:if="${selectedCategory}">
+    <!-- FIXED: Proper Thymeleaf syntax for checking if collection is empty -->
+    <div class="results-info" th:if="${selectedCategory != null}">
         <p>Showing questions for category: <strong th:text="${selectedCategory}"></strong></p>
-        <p th:text="${quiz.size() == 0 ? 'No questions found' : 'Found ' + quiz.size() + ' question(s)'}"></p>
+        <p th:if="${quiz != null and !quiz.isEmpty()}">Found <span th:text="${quiz.size()}"></span> question(s)</p>
+        <p th:if="${quiz == null or quiz.isEmpty()}">No questions found</p>
     </div>
 
-    <div th:if="${quiz != null and !quiz.empty}">
+    <!-- FIXED: Using proper isEmpty() method instead of .empty -->
+    <div th:if="${quiz != null and !quiz.isEmpty()}">
         <div class="table-container">
             <table class="quiz-table">
                 <thead>
@@ -357,17 +383,21 @@
                     </td>
                     <td>
                         <div class="options-container">
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option 1' ? 'correct-option' : ''}">
-                                <span class="option-label">A:</span> <span th:text="${b.option1}"></span>
+                            <div class="option" th:classappend="${b.rightAnswer == 'Option1' or b.rightAnswer == 'option1' or b.rightAnswer == 'Option 1' ? 'correct-option' : ''}">
+                                <span class="option-label">A:</span>
+                                <span th:text="${b.option1 != null} ? ${b.option1} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option 2' ? 'correct-option' : ''}">
-                                <span class="option-label">B:</span> <span th:text="${b.option2}"></span>
+                            <div class="option" th:classappend="${b.rightAnswer == 'Option2' or b.rightAnswer == 'option2' or b.rightAnswer == 'Option 2' ? 'correct-option' : ''}">
+                                <span class="option-label">B:</span>
+                                <span th:text="${b.option2 != null} ? ${b.option2} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option 3' ? 'correct-option' : ''}">
-                                <span class="option-label">C:</span> <span th:text="${b.option3}"></span>
+                            <div class="option" th:classappend="${b.rightAnswer == 'Option3' or b.rightAnswer == 'option3' or b.rightAnswer == 'Option 3' ? 'correct-option' : ''}">
+                                <span class="option-label">C:</span>
+                                <span th:text="${b.option3 != null} ? ${b.option3} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option 4' ? 'correct-option' : ''}">
-                                <span class="option-label">D:</span> <span th:text="${b.option4}"></span>
+                            <div class="option" th:classappend="${b.rightAnswer == 'Option4' or b.rightAnswer == 'option4' or b.rightAnswer == 'Option 4' ? 'correct-option' : ''}">
+                                <span class="option-label">D:</span>
+                                <span th:text="${b.option4 != null} ? ${b.option4} : 'N/A'"></span>
                             </div>
                         </div>
                     </td>
@@ -375,23 +405,28 @@
                         <div class="quiz-meta">
                             <div class="meta-item">
                                 <i class="fas fa-tag"></i>
-                                <span th:text="${b.category}"></span>
+                                <span th:text="${b.category != null} ? ${b.category} : 'Uncategorized'"></span>
                             </div>
                             <div class="meta-item">
                                 <i class="fas fa-chart-line"></i>
-                                <span th:class="${'difficulty-' + b.difficultyLevel?.toLowerCase()}"
+                                <span th:if="${b.difficultyLevel != null}"
+                                      th:class="${'difficulty-' + b.difficultyLevel?.toLowerCase()}"
                                       th:text="${b.difficultyLevel}"></span>
+                                <span th:if="${b.difficultyLevel == null}" class="difficulty-medium">Not Set</span>
                             </div>
                         </div>
                     </td>
                     <td class="action-cell">
                         <div class="btn-group">
-                            <a class="btn btn-edit" th:href="@{/updateDetails/{id}(id=${b.id})}" onclick="return confirmEdit()">
+                            <a th:if="${b.id != null}" class="btn btn-edit" th:href="@{/updateDetails/{id}(id=${b.id})}" onclick="return confirmEdit()">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a class="btn btn-delete" th:href="@{/delete_quiz/{id}(id=${b.id})}" onclick="return confirmDelete()">
+                            <a th:if="${b.id != null}" class="btn btn-delete" th:href="@{/delete_quiz/{id}(id=${b.id})}" onclick="return confirmDelete()">
                                 <i class="fas fa-trash"></i> Delete
                             </a>
+                            <span th:if="${b.id == null}" class="btn btn-edit" style="background-color: #6c757d; cursor: not-allowed;">
+                                <i class="fas fa-ban"></i> No Actions
+                            </span>
                         </div>
                     </td>
                 </tr>
@@ -400,9 +435,13 @@
         </div>
     </div>
 
-    <div th:if="${quiz == null or quiz.empty}">
-        <div class="results-info">
-            <p>No questions found for the selected category.</p>
+    <!-- FIXED: Using isEmpty() method instead of .empty -->
+    <div th:if="${quiz == null or quiz.isEmpty()}">
+        <div class="no-results">
+            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.7;"></i>
+            <h3>No Questions Found</h3>
+            <p>No quiz questions were found for the selected category "<span th:text="${selectedCategory}"></span>".</p>
+            <p>Please try a different category or add new questions.</p>
         </div>
     </div>
 
@@ -425,6 +464,10 @@
     function confirmEdit() {
         return confirm('Are you sure you want to edit this quiz question?');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Quiz results page loaded successfully');
+    });
 </script>
 </body>
 </html>
