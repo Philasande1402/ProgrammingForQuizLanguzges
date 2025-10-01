@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Questions by Category</title>
     <style>
+        /* Your existing CSS styles remain the same */
         * {
             margin: 0;
             padding: 0;
@@ -203,7 +204,7 @@
     </div>
 
     <!-- Search Form Section -->
-    <form class="search-form" action="#" method="get">
+    <form class="search-form" th:action="@{/getByCategory}" method="get">
         <div class="form-group">
             <label for="category">Category</label>
             <select id="category" name="category" required>
@@ -231,46 +232,29 @@
 </div>
 
 <script>
-    // Add form submission handling
     document.addEventListener('DOMContentLoaded', function() {
         const searchForm = document.querySelector('.search-form');
         const searchBtn = document.querySelector('.search-btn');
 
         searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
             const category = document.getElementById('category').value;
 
             if (!category) {
+                e.preventDefault();
                 alert('Please select a programming language category');
                 return;
             }
 
             // Show loading state
-            const originalText = searchBtn.innerHTML;
             searchBtn.innerHTML = '<span>Searching...</span>';
             searchBtn.disabled = true;
-
-            // Simulate API call or form submission
-            setTimeout(function() {
-                alert(`Searching for questions in ${category}`);
-
-                // Reset button
-                searchBtn.innerHTML = originalText;
-                searchBtn.disabled = false;
-
-                // In a real application, you would redirect or display results here
-                // window.location.href = `/search-results?category=${category}`;
-            }, 1000);
         });
 
         // Add interactive effects for the form elements
         const selectElement = document.getElementById('category');
-
         selectElement.addEventListener('focus', function() {
             this.style.boxShadow = '0 0 0 3px rgba(255, 255, 255, 0.5)';
         });
-
         selectElement.addEventListener('blur', function() {
             this.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
         });

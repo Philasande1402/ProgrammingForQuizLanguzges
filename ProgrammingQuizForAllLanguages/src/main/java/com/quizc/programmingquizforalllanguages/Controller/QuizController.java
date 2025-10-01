@@ -63,4 +63,21 @@ public class QuizController {
         return "redirect:/getAllQuiz";
     }
 
+    // Display the search form
+    @GetMapping("/searchByCategory")
+    public String showSearchForm() {
+        return "searchByCategory";
+    }
+
+    // Handle the search - using RequestParam instead of PathVariable
+    @GetMapping("/getByCategory")
+    public ModelAndView findByCategory(@RequestParam String category) {
+        List<Quiz> list = quizService.findByCategory(category);
+        ModelAndView m = new ModelAndView();
+        m.addObject("quiz", list);
+        m.addObject("selectedCategory", category);
+        m.setViewName("searchOutPutQuiz");
+        return m;
+    }
+
 }

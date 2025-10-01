@@ -29,4 +29,8 @@ public class QuizService {
     public void deleteById(Long id){
         quizRepository.deleteById(id);
     }
+
+    public List<Quiz> findByCategory(String category){
+        return quizRepository.findByCategory(category);
+    }
 }

@@ -29,4 +29,9 @@ public class MainController {
     public String searchByCategory(){
         return "searchByCategory";
     }
+
+    @RequestMapping("searchOutPutQuiz")
+    public String searchOutPutQuiz(){
+        return "searchOutPutQuiz";
+    }
 }
