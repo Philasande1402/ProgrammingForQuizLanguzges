@@ -156,24 +156,7 @@
             align-items: center;
         }
 
-        .correct-option {
-            background-color: #e6f7e9;
-            border-left: 3px solid #38a169;
-            font-weight: 600;
-            position: relative;
-        }
-
-        .correct-option::after {
-            content: "✓ Correct Answer";
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            color: #38a169;
-            font-weight: 600;
-        }
-
+        /* REMOVED: Correct option styling since we're hiding answers */
         .option-label {
             font-weight: 600;
             color: #1e3a8a;
@@ -284,6 +267,11 @@
             max-width: 600px;
         }
 
+        .answer-hidden {
+            color: #6c757d;
+            font-style: italic;
+        }
+
         footer {
             margin-top: 40px;
             color: rgba(255, 255, 255, 0.8);
@@ -312,13 +300,6 @@
                 flex-direction: column;
                 gap: 8px;
             }
-
-            .correct-option::after {
-                position: static;
-                transform: none;
-                margin-left: 10px;
-                content: "✓ Correct";
-            }
         }
 
         @media (max-width: 480px) {
@@ -329,11 +310,6 @@
 
             .quiz-table th, .quiz-table td {
                 padding: 8px 10px;
-            }
-
-            .correct-option::after {
-                content: "✓";
-                font-size: 0.9rem;
             }
 
             .id-cell {
@@ -355,14 +331,12 @@
         <p>Search Results</p>
     </div>
 
-    <!-- FIXED: Proper Thymeleaf syntax for checking if collection is empty -->
     <div class="results-info" th:if="${selectedCategory != null}">
         <p>Showing questions for category: <strong th:text="${selectedCategory}"></strong></p>
         <p th:if="${quiz != null and !quiz.isEmpty()}">Found <span th:text="${quiz.size()}"></span> question(s)</p>
         <p th:if="${quiz == null or quiz.isEmpty()}">No questions found</p>
     </div>
 
-    <!-- FIXED: Using proper isEmpty() method instead of .empty -->
     <div th:if="${quiz != null and !quiz.isEmpty()}">
         <div class="table-container">
             <table class="quiz-table">
@@ -370,7 +344,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Question</th>
-                    <th>Options & Answer</th>
+                    <th>Options</th>
                     <th>Category & Difficulty</th>
                     <th>Actions</th>
                 </tr>
@@ -383,21 +357,27 @@
                     </td>
                     <td>
                         <div class="options-container">
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option1' or b.rightAnswer == 'option1' or b.rightAnswer == 'Option 1' ? 'correct-option' : ''}">
+                            <!-- REMOVED: Correct answer highlighting -->
+                            <div class="option">
                                 <span class="option-label">A:</span>
                                 <span th:text="${b.option1 != null} ? ${b.option1} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option2' or b.rightAnswer == 'option2' or b.rightAnswer == 'Option 2' ? 'correct-option' : ''}">
+                            <div class="option">
                                 <span class="option-label">B:</span>
                                 <span th:text="${b.option2 != null} ? ${b.option2} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option3' or b.rightAnswer == 'option3' or b.rightAnswer == 'Option 3' ? 'correct-option' : ''}">
+                            <div class="option">
                                 <span class="option-label">C:</span>
                                 <span th:text="${b.option3 != null} ? ${b.option3} : 'N/A'"></span>
                             </div>
-                            <div class="option" th:classappend="${b.rightAnswer == 'Option4' or b.rightAnswer == 'option4' or b.rightAnswer == 'Option 4' ? 'correct-option' : ''}">
+                            <div class="option">
                                 <span class="option-label">D:</span>
                                 <span th:text="${b.option4 != null} ? ${b.option4} : 'N/A'"></span>
+                            </div>
+                            <!-- Added hidden answer indicator -->
+                            <div class="option answer-hidden">
+                                <span class="option-label">✓</span>
+                                <span>Correct answer is hidden</span>
                             </div>
                         </div>
                     </td>
@@ -435,7 +415,6 @@
         </div>
     </div>
 
-    <!-- FIXED: Using isEmpty() method instead of .empty -->
     <div th:if="${quiz == null or quiz.isEmpty()}">
         <div class="no-results">
             <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.7;"></i>
