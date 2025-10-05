@@ -44,4 +44,9 @@ public class MainController {
     public String userRegistration(){
         return "userRegistration";
     }
+
+    @RequestMapping("searchQuiz")
+    public String searchQuiz(){
+        return "searchQuiz";
+    }
 }

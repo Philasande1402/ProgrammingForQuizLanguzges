@@ -25,7 +25,7 @@ public class PersonalController {
             // Validate ID number length
             if (personalInfo.getIdNumber().length() != 13) {
                 model.addAttribute("error", "ID Number must be exactly 13 digits");
-                return "registration-form"; // Return to form with error
+                return "userRegistration"; // Return to form with error
             }
 
             personalService.addUser(personalInfo);
@@ -34,11 +34,11 @@ public class PersonalController {
         } catch (DataIntegrityViolationException e) {
             logger.error("Database error while saving user: {}", e.getMessage());
             model.addAttribute("error", "User with this ID number or email already exists");
-            return "registration-form";
+            return "userRegistration";
         } catch (Exception e) {
             logger.error("Error while saving user: {}", e.getMessage());
             model.addAttribute("error", "An error occurred during registration. Please try again.");
-            return "registration-form";
+            return "userRegistration";
         }
     }
 
@@ -46,6 +46,6 @@ public class PersonalController {
     @GetMapping("/form")
     public String showRegistrationForm(Model model) {
         model.addAttribute("personalInfo", new PersonalInfo());
-        return "registration";
+        return "userRegistration";
     }
 }
