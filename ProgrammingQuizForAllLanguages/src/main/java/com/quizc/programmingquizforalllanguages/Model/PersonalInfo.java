@@ -1,32 +1,34 @@
 package com.quizc.programmingquizforalllanguages.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DATA_tbl")
 public class PersonalInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Column(name = "id_number", nullable = false, unique = true, length = 13)
     private String idNumber;
+
+    @Column(nullable = false)
     private String province;
+
+    @Column(nullable = false)
     private String qualification;
+
+    @Column(nullable = false)
     private String email;
 
+    // Constructors, getters, and setters remain the same
     public PersonalInfo() {
-    }
-
-    public PersonalInfo(Long id, String firstName, String lastName, String idNumber, String province, String qualification, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.idNumber = idNumber;
-        this.province = province;
-        this.qualification = qualification;
-        this.email = email;
     }
 
     public PersonalInfo(String firstName, String lastName, String idNumber, String province, String qualification, String email) {
@@ -38,6 +40,7 @@ public class PersonalInfo {
         this.email = email;
     }
 
+    // Getters and setters...
     public Long getId() {
         return id;
     }
