@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration - Quiz Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2d3748;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: white;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(56, 161, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(56, 161, 105, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-with-info {
+            position: relative;
+        }
+
+        .info-text {
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Back Button -->
+<button class="back-btn" onclick="window.history.back()">←</button>
+
+<div class="container">
+    <div class="header">
+        <h1>Quiz for Programming Languages</h1>
+        <p>Complete your registration to start the quiz</p>
+    </div>
+
+    <div class="form-container">
+        <h2 class="form-title">User Registration</h2>
+
+        <!-- Update the form action to match your Spring Boot endpoint -->
+        <form id="registrationForm" action="/register" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="idNumber">ID Number</label>
+                <div class="input-with-info">
+                    <input type="text" id="idNumber" name="idNumber" placeholder="Enter your 13-digit ID number" required maxlength="13">
+                    <div class="info-text">Must be exactly 13 digits (numbers only)</div>
+                    <div class="error-message" id="idError">Please enter a valid 13-digit ID number (numbers only)</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="province">Province</label>
+                <select id="province" name="province" required>
+                    <option value="">Select your province</option>
+                    <option value="Eastern Cape">Eastern Cape</option>
+                    <option value="Free State">Free State</option>
+                    <option value="Gauteng">Gauteng</option>
+                    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                    <option value="Limpopo">Limpopo</option>
+                    <option value="Mpumalanga">Mpumalanga</option>
+                    <option value="North West">North West</option>
+                    <option value="Northern Cape">Northern Cape</option>
+                    <option value="Western Cape">Western Cape</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="qualification">Qualification</label>
+                <select id="qualification" name="qualification" required>
+                    <option value="">Select your qualification</option>
+                    <option value="High School">High School</option>
+                    <option value="Certificate">Certificate</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                    <option value="Honours Degree">Honours Degree</option>
+                    <option value="Master's Degree">Master's Degree</option>
+                    <option value="Doctorate">Doctorate</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Register & Start Quiz</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Quiz Management System | User Registration</p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('idNumber').addEventListener('input', function(e) {
+        // Only allow numbers
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+        // Limit to 13 digits
+        if (this.value.length > 13) {
+            this.value = this.value.slice(0, 13);
+        }
+
+        // Validate as user types
+        validateIdNumber();
+    });
+
+    function validateIdNumber() {
+        const idInput = document.getElementById('idNumber');
+        const idError = document.getElementById('idError');
+        const idValue = idInput.value;
+
+        // Check if it's exactly 13 digits and contains only numbers
+        const isValid = /^\d{13}$/.test(idValue);
+
+        if (idValue && !isValid) {
+            idError.style.display = 'block';
+            idInput.style.borderColor = '#e53e3e';
+            return false;
+        } else {
+            idError.style.display = 'none';
+            idInput.style.borderColor = isValid ? '#38a169' : '#cbd5e0';
+            return true;
+        }
+    }
+
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        // Validate ID number before submitting
+        if (!validateIdNumber()) {
+            e.preventDefault();
+            document.getElementById('idNumber').focus();
+            return;
+        }
+
+        // If validation passes, the form will submit normally to your Spring Boot endpoint
+        // Spring Boot will handle the database insertion and redirection
+    });
+</script>
+</body>
+</html>

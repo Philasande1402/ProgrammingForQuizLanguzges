@@ -34,4 +34,14 @@ public class MainController {
     public String searchOutPutQuiz(){
         return "searchOutPutQuiz";
     }
+
+    @RequestMapping("userFirstPage")
+    public String userFirstPage(){
+        return "userFirstPage";
+    }
+
+    @RequestMapping("userRegistration")
+    public String userRegistration(){
+        return "userRegistration";
+    }
 }
