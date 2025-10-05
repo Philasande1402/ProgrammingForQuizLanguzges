@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,6 +50,19 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
+        .user-welcome {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
@@ -93,6 +106,18 @@
             text-align: center;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 15px;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #38a169;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border-radius: 10px;
+            border: 1px solid #c6f6d5;
         }
 
         .form-group {
@@ -176,12 +201,24 @@
                 width: 45px;
                 height: 45px;
             }
+
+            .user-welcome {
+                top: 20px;
+                right: 20px;
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
 <body>
 <!-- Back Button -->
 <a href="/registration/form" class="back-btn">←</a>
+
+<!-- User Welcome in top-right corner -->
+<div class="user-welcome" th:if="${userFirstName}">
+    Welcome, <span th:text="${userFirstName}">User</span>!
+</div>
 
 <div class="container">
     <div class="header">
@@ -191,6 +228,11 @@
 
     <div class="form-container">
         <h2 class="form-title">Search for Programming Quizzes</h2>
+
+        <!-- Welcome Message under the title -->
+        <div class="welcome-message" th:if="${userFirstName}">
+            Welcome, <span th:text="${userFirstName}">User</span>! Ready to test your programming skills?
+        </div>
 
         <!-- Form will submit to your Spring Boot backend -->
         <form id="searchQuizForm" action="/quiz/search" method="POST">
