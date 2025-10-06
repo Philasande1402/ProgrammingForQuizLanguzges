@@ -49,4 +49,9 @@ public class MainController {
     public String searchQuiz(){
         return "searchQuiz";
     }
+
+    @RequestMapping("searchUsingIdno")
+    public String searchUsingIdno(){
+        return "searchUsingIdno";
+    }
 }

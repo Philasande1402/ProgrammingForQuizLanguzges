@@ -14,4 +14,8 @@ public class PersonalService {
     public void addUser(PersonalInfo personalInfo) {
         personalRepository.save(personalInfo);
     }
+
+    public PersonalInfo findByIdNumber(String idNumber){
+        return personalRepository.findByIdNumber(idNumber);
+    }
 }
