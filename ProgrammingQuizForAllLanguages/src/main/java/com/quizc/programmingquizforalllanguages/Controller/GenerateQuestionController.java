@@ -4,6 +4,7 @@ import com.quizc.programmingquizforalllanguages.Model.PersonalInfo;
 import com.quizc.programmingquizforalllanguages.Model.Questions;
 import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Service.QuestionService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,18 +29,21 @@ public class GenerateQuestionController {
     }
 
     @GetMapping("/take/{id}")
-    public String takeQuiz(@PathVariable Long id, Model model) {
+    public String takeQuiz(@PathVariable Long id, Model model, HttpSession session) {
         Questions questions = questionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
-        PersonalInfo personalInfo = new PersonalInfo();
-        model.addAttribute("userFirstName", personalInfo.getFirstName());
+        // Get user from session
+        PersonalInfo user = (PersonalInfo) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("userFirstName", user.getFirstName());
+        }
 
         model.addAttribute("quizTitle", questions.getTitle());
         model.addAttribute("quizzes", questions.getQuizzes());
         model.addAttribute("totalQuestions", questions.getQuizzes().size());
         model.addAttribute("questionSetId", id);
 
-        return "take-quiz"; // This will resolve to take-quiz.html
+        return "take-quiz";
     }
 }
