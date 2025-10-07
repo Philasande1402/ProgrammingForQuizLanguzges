@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("quiz/question")
+@RequestMapping("/quiz")
 public class GenerateQuestionController {
 
     @Autowired
     private QuestionService questionService;
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<String> createQuestion(@RequestParam String category,@RequestParam int numQ,@RequestParam String title){
          return questionService.createQuiz(category,numQ,title);
     }
