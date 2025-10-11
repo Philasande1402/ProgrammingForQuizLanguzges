@@ -7,6 +7,7 @@ import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Service.QuestionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,28 +48,34 @@ public class GenerateQuestionController {
         return "success"; // This will resolve to success.html
     }
 
-    //I have to change this method but i won't delete it now i will start by create the that
-    // i'm thinking it will help me on this project to display on the screen the way i want it to be
-
-    @GetMapping("/take/{id}")
-    public String takeQuiz(@PathVariable Long id, Model model, HttpSession session) {
-        Questions questions = questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quiz not found"));
-
-        // Get user from session
-        PersonalInfo user = (PersonalInfo) session.getAttribute("user");
-        if (user != null) {
-            model.addAttribute("userFirstName", user.getFirstName());
+    // This method serves the HTML page using QuestionWrapper
+    @GetMapping("/quiz/take")
+    public String takeQuiz(@RequestParam Long quizId, Model model, HttpSession session) {
+        // Add user info if available
+        String userFirstName = (String) session.getAttribute("userFirstName");
+        if (userFirstName != null) {
+            model.addAttribute("userFirstName", userFirstName);
         }
 
-        model.addAttribute("quizTitle", questions.getTitle());
-        model.addAttribute("quizzes", questions.getQuizzes());
-        model.addAttribute("totalQuestions", questions.getQuizzes().size());
-        model.addAttribute("questionSetId", id);
+        // Get the quiz questions using your existing service method
+        ResponseEntity<List<QuestionWrapper>> response = questionService.getQuizQuestion(quizId);
 
-        return "take-quiz";
+        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null || response.getBody().isEmpty()) {
+            return "redirect:/quiz/search?error=Quiz+not+found";
+        }
+
+        List<QuestionWrapper> quizzes = response.getBody();
+
+        // Add data to the model for Thymeleaf
+        model.addAttribute("quizTitle", "Programming Quiz"); // You can customize this
+        model.addAttribute("totalQuestions", quizzes.size());
+        model.addAttribute("questionSetId", quizId);
+        model.addAttribute("quizzes", quizzes); // This uses QuestionWrapper objects
+
+        return "take-quiz"; // This renders your HTML page
     }
 
+    // Your existing API method - keep it as is
     @GetMapping("/get")
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@RequestParam Long quizId) {
         return questionService.getQuizQuestion(quizId);

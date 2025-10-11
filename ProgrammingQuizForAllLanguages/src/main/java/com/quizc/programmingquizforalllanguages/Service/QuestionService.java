@@ -40,13 +40,24 @@ public class QuestionService {
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Long id) {
-
         Optional<Questions> questions = questionRepository.findById(id);
+
+        if (questions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         List<Quiz> quizzesDBS = questions.get().getQuizzes();
         List<QuestionWrapper> userQuestionsWrapper = new ArrayList<>();
 
         for(Quiz quiz: quizzesDBS){
-            QuestionWrapper qw = new QuestionWrapper(quiz.getId(),quiz.getQuestionTitle(),quiz.getOption1(),quiz.getOption2(),quiz.getOption3(),quiz.getOption4());
+            QuestionWrapper qw = new QuestionWrapper(
+                    quiz.getId(),
+                    quiz.getQuestionTitle(),
+                    quiz.getOption1(),
+                    quiz.getOption2(),
+                    quiz.getOption3(),
+                    quiz.getOption4()
+            );
             userQuestionsWrapper.add(qw);
         }
 
