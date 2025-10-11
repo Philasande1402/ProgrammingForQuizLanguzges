@@ -48,34 +48,6 @@ public class GenerateQuestionController {
         return "success"; // This will resolve to success.html
     }
 
-    // This method serves the HTML page using QuestionWrapper
-    @GetMapping("/quiz/take")
-    public String takeQuiz(@RequestParam Long quizId, Model model, HttpSession session) {
-        // Add user info if available
-        String userFirstName = (String) session.getAttribute("userFirstName");
-        if (userFirstName != null) {
-            model.addAttribute("userFirstName", userFirstName);
-        }
-
-        // Get the quiz questions using your existing service method
-        ResponseEntity<List<QuestionWrapper>> response = questionService.getQuizQuestion(quizId);
-
-        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null || response.getBody().isEmpty()) {
-            return "redirect:/quiz/search?error=Quiz+not+found";
-        }
-
-        List<QuestionWrapper> quizzes = response.getBody();
-
-        // Add data to the model for Thymeleaf
-        model.addAttribute("quizTitle", "Programming Quiz"); // You can customize this
-        model.addAttribute("totalQuestions", quizzes.size());
-        model.addAttribute("questionSetId", quizId);
-        model.addAttribute("quizzes", quizzes); // This uses QuestionWrapper objects
-
-        return "take-quiz"; // This renders your HTML page
-    }
-
-    // Your existing API method - keep it as is
     @GetMapping("/get")
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@RequestParam Long quizId) {
         return questionService.getQuizQuestion(quizId);

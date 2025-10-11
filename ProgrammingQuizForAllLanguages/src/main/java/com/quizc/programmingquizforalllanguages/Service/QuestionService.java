@@ -39,8 +39,8 @@ public class QuestionService {
         return questionRepository.findAllQuizIds();
     }
 
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Long id) {
-        Optional<Questions> questions = questionRepository.findById(id);
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Long questionSetId) {
+        Optional<Questions> questions = questionRepository.findById(questionSetId);
 
         if (questions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

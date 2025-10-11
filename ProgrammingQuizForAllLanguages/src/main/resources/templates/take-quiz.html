@@ -125,6 +125,16 @@
             margin-bottom: 20px;
         }
 
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .user-welcome {
                 top: 20px;
@@ -152,42 +162,57 @@
 <div class="container">
     <a href="/quiz/search" class="back-btn">← Back to Search</a>
 
+    <!-- Error message display -->
+    <div th:if="${param.error}" class="error-message">
+        <strong>Error:</strong> <span th:text="${param.error}">Unable to load quiz</span>
+    </div>
+
     <div class="quiz-header">
         <h1 class="quiz-title" th:text="${quizTitle}">Quiz Title</h1>
         <p>Total Questions: <span th:text="${totalQuestions}">0</span></p>
     </div>
 
-    <form id="quizForm" th:action="@{/quiz/submit}" method="POST">
-        <input type="hidden" name="questionSetId" th:value="${questionSetId}">
+    <!-- Check if there are questions to display -->
+    <div th:if="${quizzes != null and !quizzes.empty}">
+        <form id="quizForm" th:action="@{/quiz/submit}" method="POST">
+            <input type="hidden" name="questionSetId" th:value="${questionSetId}">
 
-        <div th:each="quiz, iter : ${quizzes}">
-            <div class="question-container">
-                <div class="question-text" th:text="${iter.index + 1 + '. ' + quiz.questionTitle}">
-                    Question text here
-                </div>
-                <div class="options-container">
-                    <label class="option-label">
-                        <input type="radio" th:name="'answer_' + ${quiz.id}" th:value="${quiz.option1}" required>
-                        <span th:text="${quiz.option1}">Option 1</span>
-                    </label>
-                    <label class="option-label">
-                        <input type="radio" th:name="'answer_' + ${quiz.id}" th:value="${quiz.option2}">
-                        <span th:text="${quiz.option2}">Option 2</span>
-                    </label>
-                    <label class="option-label">
-                        <input type="radio" th:name="'answer_' + ${quiz.id}" th:value="${quiz.option3}">
-                        <span th:text="${quiz.option3}">Option 3</span>
-                    </label>
-                    <label class="option-label">
-                        <input type="radio" th:name="'answer_' + ${quiz.id}" th:value="${quiz.option4}">
-                        <span th:text="${quiz.option4}">Option 4</span>
-                    </label>
+            <!-- Iterate through each question -->
+            <div th:each="question, iter : ${quizzes}">
+                <div class="question-container">
+                    <div class="question-text" th:text="${iter.index + 1 + '. ' + question.questionTitle}">
+                        Question text here
+                    </div>
+                    <div class="options-container">
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="${question.option1}" required>
+                            <span th:text="${question.option1}">Option 1</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="${question.option2}">
+                            <span th:text="${question.option2}">Option 2</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="${question.option3}">
+                            <span th:text="${question.option3}">Option 3</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="${question.option4}">
+                            <span th:text="${question.option4}">Option 4</span>
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <button type="submit" class="submit-btn">Submit Quiz</button>
-    </form>
+            <button type="submit" class="submit-btn">Submit Quiz</button>
+        </form>
+    </div>
+
+    <!-- Show message if no questions found -->
+    <div th:if="${quizzes == null or quizzes.empty}" class="error-message">
+        <p>No questions found for this quiz. Please try another quiz.</p>
+        <a href="/quiz/search" class="back-btn" style="margin-top: 10px;">Back to Quiz Search</a>
+    </div>
 </div>
 </body>
 </html>
