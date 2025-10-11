@@ -1,14 +1,18 @@
 package com.quizc.programmingquizforalllanguages.Controller;
 
 import com.quizc.programmingquizforalllanguages.Model.PersonalInfo;
+import com.quizc.programmingquizforalllanguages.Model.QuestionWrapper;
 import com.quizc.programmingquizforalllanguages.Model.Questions;
 import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Service.QuestionService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller  // Changed from @RestController
 @RequestMapping("/quiz")
@@ -23,10 +27,24 @@ public class GenerateQuestionController {
     @PostMapping("/create")
     public String createQuestion(@RequestParam String category,
                                  @RequestParam int numQ,
-                                 @RequestParam String title) {
-        // Call service and return the view name
-        return questionService.createQuiz(category, numQ, title);
+                                 @RequestParam String title,
+                                 Model model) {
+
+        // Call service to create quiz and get the created quiz object
+        Questions createdQuiz = questionService.createQuiz(category, numQ, title);
+
+        // Add attributes to model for the success page
+        model.addAttribute("title", createdQuiz.getTitle());
+        model.addAttribute("category", category);
+        model.addAttribute("numQ", numQ);
+        model.addAttribute("quizId", createdQuiz.getId());
+
+        // Return the success page view name
+        return "success"; // This will resolve to success.html
     }
+
+    //I have to change this method but i won't delete it now i will start by create the that
+    // i'm thinking it will help me on this project to display on the screen the way i want it to be
 
     @GetMapping("/take/{id}")
     public String takeQuiz(@PathVariable Long id, Model model, HttpSession session) {
@@ -45,5 +63,10 @@ public class GenerateQuestionController {
         model.addAttribute("questionSetId", id);
 
         return "take-quiz";
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Long id){
+       return questionService.getQuizQuestion(id);
     }
 }
