@@ -69,8 +69,8 @@ public class GenerateQuestionController {
         return "take-quiz";
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Long id){
-       return questionService.getQuizQuestion(id);
+    @GetMapping("/get")
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@RequestParam Long quizId) {
+        return questionService.getQuizQuestion(quizId);
     }
 }
