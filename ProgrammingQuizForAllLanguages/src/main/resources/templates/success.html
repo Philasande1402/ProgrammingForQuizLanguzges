@@ -83,6 +83,46 @@
             padding: 40px;
             width: 100%;
             text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .get-quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .get-quiz-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .get-quiz-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .form-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .success-icon {
@@ -179,6 +219,17 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .btn-form {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(16, 185, 129, 0.4);
+        }
+
         .footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
@@ -195,7 +246,7 @@
                 width: 100%;
             }
 
-            .success-container {
+            .success-container, .get-quiz-container {
                 padding: 25px;
             }
 
@@ -208,6 +259,14 @@
                 right: 20px;
                 width: 45px;
                 height: 45px;
+            }
+
+            .get-quiz-form {
+                flex-direction: column;
+            }
+
+            .form-input {
+                min-width: 100%;
             }
         }
     </style>
@@ -251,21 +310,37 @@
         </div>
 
         <div class="action-buttons">
-            <a th:href="@{/quiz/take/{id}(id=${quizId})}" class="btn btn-primary">
-                Start Quiz Now
-            </a>
-            <a href="/quiz/create" class="btn btn-secondary">
+            <a href="/searchQuiz" class="btn btn-secondary">
                 Create Another Quiz
             </a>
-            <a href="/dashboard" class="btn btn-secondary">
+            <a href="/" class="btn btn-secondary">
                 Back to Dashboard
             </a>
         </div>
     </div>
+
+    <!-- New Get Quiz Form Section -->
+    <div class="get-quiz-container">
+        <h2 class="get-quiz-title">Get Another Quiz by ID</h2>
+        <form th:action="@{/quiz/get}" method="get" class="get-quiz-form">
+            <input type="text"
+                   name="quizId"
+                   class="form-input"
+                   placeholder="Enter Quiz ID"
+                   required
+                   th:value="${quizId}">
+            <button type="submit" class="btn btn-form">
+                Get Quiz
+            </button>
+        </form>
+        <p style="margin-top: 15px; color: #4a5568; font-size: 0.9rem;">
+            Enter a Quiz ID to retrieve and take another quiz
+        </p>
+    </div>
 </div>
 
 <div class="footer">
-    <p>© 2023 Quiz Application. All rights reserved.</p>
+    <p>© 2025 Quiz Management System. <strong>Philasande Valentine Nkosi</strong>.</p>
 </div>
 </body>
 </html>

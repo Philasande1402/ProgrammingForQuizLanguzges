@@ -175,6 +175,55 @@
             box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
         }
 
+        .success-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .button-separator {
+            text-align: center;
+            margin: 15px 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .button-separator::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .button-separator span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
         .footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
@@ -267,6 +316,16 @@
             </div>
 
             <button type="submit" class="search-btn">Search Quizzes</button>
+
+            <!-- Separator between buttons -->
+            <div class="button-separator">
+                <span>OR</span>
+            </div>
+
+            <!-- Direct link to success page -->
+            <a th:href="@{/success}" class="success-btn">
+                Go Directly to Quiz Success Page
+            </a>
         </form>
     </div>
 

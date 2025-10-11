@@ -35,6 +35,10 @@ public class QuestionService {
         return savedQuestions;
     }
 
+    public List<Long> getAllQuizIds() {
+        return questionRepository.findAllQuizIds();
+    }
+
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Long id) {
 
         Optional<Questions> questions = questionRepository.findById(id);

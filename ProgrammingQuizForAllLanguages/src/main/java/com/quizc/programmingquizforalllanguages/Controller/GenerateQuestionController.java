@@ -33,11 +33,15 @@ public class GenerateQuestionController {
         // Call service to create quiz and get the created quiz object
         Questions createdQuiz = questionService.createQuiz(category, numQ, title);
 
+        // Get ALL quiz IDs from the database
+        List<Long> allQuizIds = questionService.getAllQuizIds();
+
         // Add attributes to model for the success page
         model.addAttribute("title", createdQuiz.getTitle());
         model.addAttribute("category", category);
         model.addAttribute("numQ", numQ);
         model.addAttribute("quizId", createdQuiz.getId());
+        model.addAttribute("allQuizIds", allQuizIds); // Add all IDs
 
         // Return the success page view name
         return "success"; // This will resolve to success.html
