@@ -3,6 +3,7 @@ package com.quizc.programmingquizforalllanguages.Service;
 import com.quizc.programmingquizforalllanguages.Model.QuestionWrapper;
 import com.quizc.programmingquizforalllanguages.Model.Questions;
 import com.quizc.programmingquizforalllanguages.Model.Quiz;
+import com.quizc.programmingquizforalllanguages.Model.Response;
 import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,23 @@ public class QuestionService {
         }
 
         return userQuestionsWrapper;
+    }
+
+    //Submit quiz questions
+
+    public ResponseEntity<Integer> calculateQuiz(Long id, List<Response> responses) {
+        Optional<Questions> questions = questionRepository.findById(id);
+        List<Quiz> quizzes = questions.get().getQuizzes();
+        int right=0;
+        int i=0;
+
+        for(Response response: responses){
+            if(response.getResponse().equals(quizzes.get(i).getRightAnswer())){
+                right++;
+            }
+            i++;
+        }
+
+        return new ResponseEntity<>(right,HttpStatus.OK);
     }
 }

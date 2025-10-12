@@ -3,6 +3,7 @@ package com.quizc.programmingquizforalllanguages.Controller;
 import com.quizc.programmingquizforalllanguages.Model.PersonalInfo;
 import com.quizc.programmingquizforalllanguages.Model.QuestionWrapper;
 import com.quizc.programmingquizforalllanguages.Model.Questions;
+import com.quizc.programmingquizforalllanguages.Model.Response;
 import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Service.QuestionService;
 import jakarta.servlet.http.HttpSession;
@@ -80,5 +81,10 @@ public class GenerateQuestionController {
             model.addAttribute("error", "Error loading quiz: " + e.getMessage());
             return "take-quiz";
         }
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<Integer> submit(@RequestParam Long id,@RequestParam List<Response> responses){
+        return questionService.calculateQuiz(id,responses);
     }
 }
