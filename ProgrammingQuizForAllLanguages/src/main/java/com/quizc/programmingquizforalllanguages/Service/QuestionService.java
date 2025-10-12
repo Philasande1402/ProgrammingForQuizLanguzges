@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +40,11 @@ public class QuestionService {
         return questionRepository.findAllQuizIds();
     }
 
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(Long questionSetId) {
+    public List<QuestionWrapper> getQuizQuestion(Long questionSetId) {
         Optional<Questions> questions = questionRepository.findById(questionSetId);
 
         if (questions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return Collections.emptyList();
         }
 
         List<Quiz> quizzesDBS = questions.get().getQuizzes();
@@ -61,6 +62,6 @@ public class QuestionService {
             userQuestionsWrapper.add(qw);
         }
 
-        return new ResponseEntity<>(userQuestionsWrapper, HttpStatus.OK);
+        return userQuestionsWrapper;
     }
 }

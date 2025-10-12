@@ -49,7 +49,34 @@ public class GenerateQuestionController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@RequestParam Long quizId) {
-        return questionService.getQuizQuestion(quizId);
+    public String getQuizQuestions(@RequestParam Long quizId, Model model, HttpSession session) {
+        try {
+            List<QuestionWrapper> questionWrapper = questionService.getQuizQuestion(quizId);
+
+            if (questionWrapper.isEmpty()) {
+                model.addAttribute("error", "No questions found for this quiz ID: " + quizId);
+                return "take-quiz"; // Return to the same page with error message
+            }
+
+            // Add data to the model for Thymeleaf template
+            model.addAttribute("quizzes", questionWrapper);
+            model.addAttribute("totalQuestions", questionWrapper.size());
+            model.addAttribute("questionSetId", quizId);
+
+            // Add quiz title (you might want to fetch this from your service)
+            model.addAttribute("quizTitle", "Quiz #" + quizId);
+
+            // Add user info if available in session
+            String userFirstName = (String) session.getAttribute("userFirstName");
+            if (userFirstName != null) {
+                model.addAttribute("userFirstName", userFirstName);
+            }
+
+            return "take-quiz"; // Return the template name without redirect
+
+        } catch (Exception e) {
+            model.addAttribute("error", "Error loading quiz: " + e.getMessage());
+            return "take-quiz";
+        }
     }
 }
