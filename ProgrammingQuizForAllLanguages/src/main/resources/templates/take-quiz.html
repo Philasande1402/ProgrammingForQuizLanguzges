@@ -223,7 +223,6 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            transition: width 0.3s ease;
             width: 0%;
         }
 
@@ -278,12 +277,12 @@
         <strong>Error:</strong> <span th:text="${error}">Unable to load quiz</span>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar" th:if="${quizzes != null and !quizzes.empty}">
-        <div class="progress-fill" id="progressFill"></div>
+    <!-- Progress Bar (Static - will not update) -->
+    <div class="progress-bar" th:if="${quizzes != null and !quizzes.isEmpty()}">
+        <div class="progress-fill"></div>
     </div>
 
-    <div class="quiz-header" th:if="${quizzes != null and !quizzes.empty}">
+    <div class="quiz-header" th:if="${quizzes != null and !quizzes.isEmpty()}">
         <h1 class="quiz-title" th:text="${quizTitle}">Quiz Title</h1>
         <div class="quiz-info">
             <div class="info-item">Total Questions: <strong th:text="${totalQuestions}">0</strong></div>
@@ -292,7 +291,7 @@
     </div>
 
     <!-- Check if there are questions to display -->
-    <div th:if="${quizzes != null and !quizzes.empty}">
+    <div th:if="${quizzes != null and !quizzes.isEmpty()}">
         <form id="quizForm" th:action="@{/quiz/submit}" method="POST">
             <input type="hidden" name="questionSetId" th:value="${questionSetId}">
 
@@ -340,7 +339,7 @@
     </div>
 
     <!-- Show message if no questions found -->
-    <div th:if="${quizzes == null or quizzes.empty}" class="error-message">
+    <div th:if="${quizzes == null or quizzes.isEmpty()}" class="error-message">
         <div style="text-align: center;">
             <h3 style="margin-bottom: 15px;">No Questions Found</h3>
             <p style="margin-bottom: 20px;">No questions were found for this quiz. Please try another quiz ID.</p>
@@ -356,85 +355,5 @@
         <p>Loading quiz questions...</p>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('quizForm');
-        const submitBtn = form ? form.querySelector('.submit-btn') : null;
-        const progressFill = document.getElementById('progressFill');
-
-        // Update progress bar as user answers questions
-        function updateProgress() {
-            if (progressFill) {
-                const totalQuestions = document.querySelectorAll('.question-container').length;
-                const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
-                const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
-                progressFill.style.width = progress + '%';
-            }
-        }
-
-        // Add form validation
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const unansweredQuestions = [];
-                const questionContainers = document.querySelectorAll('.question-container');
-
-                questionContainers.forEach((container, index) => {
-                    const questionNumber = index + 1;
-                    const radioButtons = container.querySelectorAll('input[type="radio"]');
-                    const isAnswered = Array.from(radioButtons).some(radio => radio.checked);
-
-                    if (!isAnswered) {
-                        unansweredQuestions.push(questionNumber);
-                    }
-                });
-
-                if (unansweredQuestions.length > 0) {
-                    e.preventDefault();
-                    alert('Please answer all questions before submitting.\n\nUnanswered questions: ' + unansweredQuestions.join(', '));
-                    return;
-                }
-
-                // Show loading state
-                if (submitBtn) {
-                    submitBtn.innerHTML = 'Submitting...';
-                    submitBtn.disabled = true;
-                }
-            });
-        }
-
-        // Add visual feedback for selected options
-        const optionLabels = document.querySelectorAll('.option-label');
-        optionLabels.forEach(label => {
-            const radio = label.querySelector('input[type="radio"]');
-            radio.addEventListener('change', function() {
-                // Remove selected class from all options in this question
-                const parentContainer = this.closest('.options-container');
-                parentContainer.querySelectorAll('.option-label').forEach(opt => {
-                    opt.style.background = 'white';
-                    opt.style.borderColor = '#e2e8f0';
-                });
-
-                // Add selected class to current option
-                if (this.checked) {
-                    label.style.background = '#f0f9ff';
-                    label.style.borderColor = '#4f46e5';
-                }
-
-                // Update progress
-                updateProgress();
-            });
-        });
-
-        // Listen for radio button changes to update progress
-        const radioButtons = document.querySelectorAll('input[type="radio"]');
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', updateProgress);
-        });
-
-        // Initial progress update
-        updateProgress();
-    });
-</script>
 </body>
 </html>
