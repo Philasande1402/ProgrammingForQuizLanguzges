@@ -25,6 +25,7 @@ public class GenerateQuestionController {
     @Autowired
     private QuestionRepository questionRepository;
 
+    //Create quiz questions
     @PostMapping("/create")
     public String createQuestion(@RequestParam String category,
                                  @RequestParam int numQ,
@@ -48,6 +49,7 @@ public class GenerateQuestionController {
         return "success"; // This will resolve to success.html
     }
 
+    //Get quiz questions
     @GetMapping("/get")
     public String getQuizQuestions(@RequestParam Long quizId, Model model, HttpSession session) {
         try {
@@ -59,7 +61,7 @@ public class GenerateQuestionController {
             }
 
             // Add data to the model for Thymeleaf template
-            model.addAttribute("quizzes", questionWrapper);
+            model.addAttribute("quizzes", questionWrapper);//this line have all questions
             model.addAttribute("totalQuestions", questionWrapper.size());
             model.addAttribute("questionSetId", quizId);
 

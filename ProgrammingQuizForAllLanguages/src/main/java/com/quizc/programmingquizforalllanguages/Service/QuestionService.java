@@ -23,6 +23,7 @@ public class QuestionService {
     @Autowired
     private QuizRepository quizRepository;
 
+    //Create quiz questions
     public Questions createQuiz(String category, int numQ, String title) {
         List<Quiz> quizzes = quizRepository.findRandomQuestionByCategory(category, numQ);
 
@@ -40,6 +41,7 @@ public class QuestionService {
         return questionRepository.findAllQuizIds();
     }
 
+    //Get quiz questions
     public List<QuestionWrapper> getQuizQuestion(Long questionSetId) {
         Optional<Questions> questions = questionRepository.findById(questionSetId);
 

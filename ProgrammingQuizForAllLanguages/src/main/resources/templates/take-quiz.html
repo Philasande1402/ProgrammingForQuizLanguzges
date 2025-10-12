@@ -298,7 +298,9 @@
             <!-- Iterate through each question -->
             <div th:each="question, iter : ${quizzes}">
                 <div class="question-container">
-                    <div class="question-number" th:text="'Question ' + (iter.index + 1)">Question 1</div>
+                    <!-- FIXED: Show actual question ID from database -->
+                    <div class="question-number" th:text="'Question ID: ' + ${question.id}">Question ID</div>
+
                     <div class="question-text" th:text="${question.questionTitle}">
                         Question text here
                     </div>
