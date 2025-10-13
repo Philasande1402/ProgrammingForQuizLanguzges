@@ -69,20 +69,18 @@ public class QuestionService {
     }
 
     //Submit quiz questions
-
-    public ResponseEntity<Integer> calculateQuiz(Long id, List<Response> responses) {
+    public int calculateQuiz(Long id, List<Response> responses) {
         Optional<Questions> questions = questionRepository.findById(id);
         List<Quiz> quizzes = questions.get().getQuizzes();
-        int right=0;
-        int i=0;
+        int right = 0;
+        int i = 0;
 
-        for(Response response: responses){
-            if(response.getResponse().equals(quizzes.get(i).getRightAnswer())){
+        for(Response response : responses) {
+            if(response.getResponse().equals(quizzes.get(i).getRightAnswer())) {
                 right++;
             }
             i++;
         }
-
-        return new ResponseEntity<>(right,HttpStatus.OK);
+        return right;
     }
 }

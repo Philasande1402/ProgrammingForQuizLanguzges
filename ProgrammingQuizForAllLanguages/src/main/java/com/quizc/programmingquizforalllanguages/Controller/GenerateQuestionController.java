@@ -84,7 +84,17 @@ public class GenerateQuestionController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Integer> submit(@RequestParam Long id,@RequestParam List<Response> responses){
-        return questionService.calculateQuiz(id,responses);
+    public String submit(@RequestParam Long questionSetId,
+                         @RequestParam List<Response> responses,  // Remove @RequestBody
+                         Model model) {
+        int score = questionService.calculateQuiz(questionSetId, responses);
+        int totalQuestions = responses.size();
+
+        model.addAttribute("score", score);
+        model.addAttribute("totalQuestions", totalQuestions);
+        model.addAttribute("percentage", (score * 100) / totalQuestions);
+
+        return "result";
     }
+
 }
