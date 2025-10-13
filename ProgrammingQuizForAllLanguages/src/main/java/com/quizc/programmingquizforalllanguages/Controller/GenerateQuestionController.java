@@ -83,6 +83,7 @@ public class GenerateQuestionController {
         }
     }
 
+    //Submit quiz questions
     @PostMapping("/submit")
     public String submit(@RequestParam Long questionSetId,
                          @RequestBody List<Response> responses,
