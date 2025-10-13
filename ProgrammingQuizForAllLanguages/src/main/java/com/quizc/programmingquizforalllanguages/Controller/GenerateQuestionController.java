@@ -93,6 +93,7 @@ public class GenerateQuestionController {
         model.addAttribute("score", score);
         model.addAttribute("totalQuestions", totalQuestions);
         model.addAttribute("percentage", (score * 100) / totalQuestions);
+        model.addAttribute("questionSetId", questionSetId); // Added for retry button
 
         return "result"; // This will return result.html
     }

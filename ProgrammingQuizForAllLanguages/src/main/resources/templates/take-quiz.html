@@ -198,8 +198,8 @@
             </div>
         </div>
 
-        <form id="quizForm" th:action="@{/quiz/submit}" method="POST">
-            <input type="hidden" name="questionSetId" th:value="${questionSetId}">
+        <form id="quizForm">
+            <input type="hidden" id="questionSetId" th:value="${questionSetId}">
 
             <!-- Questions -->
             <div th:each="question, iter : ${quizzes}">
@@ -209,26 +209,26 @@
 
                     <div class="options-container">
                         <label class="option-label">
-                            <input type="radio" th:name="'answer_' + ${question.id}" value="option1" required>
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option1" th:data-question-id="${question.id}" required>
                             <span th:text="${question.option1}">Option 1</span>
                         </label>
                         <label class="option-label">
-                            <input type="radio" th:name="'answer_' + ${question.id}" value="option2">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option2" th:data-question-id="${question.id}">
                             <span th:text="${question.option2}">Option 2</span>
                         </label>
                         <label class="option-label">
-                            <input type="radio" th:name="'answer_' + ${question.id}" value="option3">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option3" th:data-question-id="${question.id}">
                             <span th:text="${question.option3}">Option 3</span>
                         </label>
                         <label class="option-label">
-                            <input type="radio" th:name="'answer_' + ${question.id}" value="option4">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option4" th:data-question-id="${question.id}">
                             <span th:text="${question.option4}">Option 4</span>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Answers</button>
+            <button type="button" class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
         </form>
     </div>
 
@@ -244,5 +244,56 @@
         <p>Loading quiz questions...</p>
     </div>
 </div>
+
+<script>
+    function submitQuiz() {
+        // Get all selected answers
+        const selectedAnswers = [];
+        const questionSetId = document.getElementById('questionSetId').value;
+
+        // Find all checked radio buttons
+        const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
+
+        checkedRadios.forEach(radio => {
+            selectedAnswers.push({
+                questionId: radio.getAttribute('data-question-id'),
+                response: radio.value
+            });
+        });
+
+        // Check if all questions are answered
+        if (selectedAnswers.length !== document.querySelectorAll('.question-container').length) {
+            alert('Please answer all questions before submitting!');
+            return;
+        }
+
+        // Submit to backend
+        fetch('/quiz/submit?questionSetId=' + questionSetId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedAnswers)
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text();
+                }
+            })
+            .then(html => {
+                if (html) {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting quiz. Please try again.');
+            });
+    }
+</script>
 </body>
 </html>
