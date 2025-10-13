@@ -85,7 +85,7 @@ public class GenerateQuestionController {
 
     @PostMapping("/submit")
     public String submit(@RequestParam Long questionSetId,
-                         @RequestParam List<Response> responses,  // Remove @RequestBody
+                         @RequestBody List<Response> responses,
                          Model model) {
         int score = questionService.calculateQuiz(questionSetId, responses);
         int totalQuestions = responses.size();
@@ -94,7 +94,8 @@ public class GenerateQuestionController {
         model.addAttribute("totalQuestions", totalQuestions);
         model.addAttribute("percentage", (score * 100) / totalQuestions);
 
-        return "result";
+        return "result"; // This will return result.html
     }
+
 
 }
