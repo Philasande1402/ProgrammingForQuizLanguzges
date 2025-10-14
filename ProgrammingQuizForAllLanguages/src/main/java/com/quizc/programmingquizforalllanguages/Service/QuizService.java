@@ -1,6 +1,7 @@
 package com.quizc.programmingquizforalllanguages.Service;
 
 import com.quizc.programmingquizforalllanguages.Model.Quiz;
+import com.quizc.programmingquizforalllanguages.Repository.QuestionRepository;
 import com.quizc.programmingquizforalllanguages.Repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class QuizService {
 
     @Autowired
     private QuizRepository quizRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     public void save(Quiz quiz) {
         try {
@@ -83,5 +86,10 @@ public class QuizService {
             logger.error("Error finding quiz by category '{}': {}", category, e.getMessage(), e);
             throw new RuntimeException("Failed to search quiz by category", e);
         }
+    }
+
+    //Get all questions ID
+    public List<Long> getAllQuizIds() {
+        return questionRepository.findAllQuizIds();
     }
 }

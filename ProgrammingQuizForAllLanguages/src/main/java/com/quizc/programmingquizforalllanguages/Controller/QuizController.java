@@ -123,4 +123,13 @@ public class QuizController {
         }
         return m;
     }
+
+    @GetMapping("/getAllIds")
+    public String getAllIds(Model model){
+        List<Long> allIds = quizService.getAllQuizIds();
+
+        model.addAttribute("allQuizIds",allIds);
+
+        return "shown-quizzes";
+    }
 }

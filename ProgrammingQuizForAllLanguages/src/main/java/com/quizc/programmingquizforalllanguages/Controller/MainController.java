@@ -65,4 +65,9 @@ public class MainController {
     public String takeQuiz2(){
         return "take-quiz2";
     }
+
+    @GetMapping("/shown-quizzes")
+    public String shownQuizzes(){
+        return "shown-quizzes";
+    }
 }
