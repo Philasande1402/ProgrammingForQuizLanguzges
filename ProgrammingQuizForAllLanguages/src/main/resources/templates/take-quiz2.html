@@ -247,6 +247,55 @@
             font-size: 0.9rem;
         }
 
+        /* New styles for the info section */
+        .info-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .main-message {
+            font-size: 1.1rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .quick-tips {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .quick-tips h4 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .quick-tips ul {
+            list-style: none;
+            color: #4b5563;
+        }
+
+        .quick-tips li {
+            margin-bottom: 10px;
+            padding-left: 5px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .quick-tips li:before {
+            content: "•";
+            color: #3b82f6;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
         @media (max-width: 768px) {
             .action-buttons {
                 flex-direction: column;
@@ -287,6 +336,11 @@
                 padding: 8px 16px;
                 font-size: 0.9rem;
             }
+
+            .info-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -304,9 +358,24 @@
     <div class="success-container">
         <div class="success-icon">✓</div>
         <h2 class="success-title">Quiz Created Successfully!</h2>
-        <p class="success-message">
-            Your quiz has been created and is now ready. You can start taking it immediately or share it with others.
-        </p>
+
+        <!-- New Info Section -->
+        <div class="info-section">
+            <div class="main-message">
+                <p><strong>Your quiz has been successfully created and added to your collection.</strong> Below you'll find all available Quiz IDs that you can use to access this quiz anytime.</p>
+                <p style="margin-top: 15px;">Each Quiz ID represents a unique instance of your quiz that can be shared with participants or used for your own practice sessions.</p>
+            </div>
+
+            <div class="quick-tips">
+                <h4>💡 Quick Tips</h4>
+                <ul>
+                    <li>Copy any Quiz ID to share with participants</li>
+                    <li>Use the form below to access other quizzes</li>
+                    <li>All Quiz IDs remain active indefinitely</li>
+                    <li>Create multiple quizzes for different topics</li>
+                </ul>
+            </div>
+        </div>
 
         <!-- Display All Quiz IDs -->
         <div class="quiz-ids-container">
