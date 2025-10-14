@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "Quiz_tbl")
 public class Quiz {
     @Id
@@ -22,6 +20,32 @@ public class Quiz {
     private String rightAnswer;
     private String difficultyLevel;
     private String category;
+
+    public Quiz() {
+    }
+
+    public Quiz(String questionTitle, String option1, String option2, String option3, String option4, String rightAnswer, String difficultyLevel, String category) {
+        this.questionTitle = questionTitle;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
+        this.rightAnswer = rightAnswer;
+        this.difficultyLevel = difficultyLevel;
+        this.category = category;
+    }
+
+    public Quiz(Long id, String questionTitle, String option1, String option2, String option3, String option4, String rightAnswer, String difficultyLevel, String category) {
+        this.id = id;
+        this.questionTitle = questionTitle;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
+        this.rightAnswer = rightAnswer;
+        this.difficultyLevel = difficultyLevel;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;
