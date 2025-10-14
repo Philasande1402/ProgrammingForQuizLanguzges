@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Created Successfully</title>
+    <title>Your Quiz Collection</title>
     <style>
         * {
             margin: 0;
@@ -51,7 +51,7 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -65,21 +65,22 @@
 
         .header h1 {
             color: white;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .header p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 300;
         }
 
         .success-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
             padding: 40px;
             width: 100%;
             text-align: center;
@@ -89,114 +90,132 @@
         .get-quiz-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 35px;
             width: 100%;
             text-align: center;
         }
 
         .get-quiz-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
             color: #2d3748;
+            font-weight: 600;
         }
 
         .get-quiz-form {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .form-input {
             flex: 1;
-            min-width: 200px;
-            padding: 12px 15px;
+            min-width: 250px;
+            padding: 14px 18px;
             border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.05rem;
             background: white;
+            transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
             border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            transform: translateY(-1px);
         }
 
         .success-icon {
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: #10b981;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
         }
 
         .success-title {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
             color: #2d3748;
-        }
-
-        .success-message {
-            font-size: 1.1rem;
-            color: #4a5568;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .quiz-ids-container {
-            background: #f7fafc;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 35px;
             width: 100%;
             text-align: center;
+            border: 1px solid #e2e8f0;
         }
 
         .quiz-ids-title {
             color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .quiz-ids-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
         }
 
         .quiz-id-item {
             background: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e0;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
             color: #4a5568;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .quiz-id-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
             border-color: #4f46e5;
             color: #4f46e5;
         }
 
+        .quiz-id-item:active {
+            transform: translateY(-1px);
+        }
+
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-top: 10px;
         }
 
         .btn {
-            padding: 14px 25px;
+            padding: 16px 32px;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -204,75 +223,87 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             color: white;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             color: #4a5568;
-            border: 1px solid #cbd5e0;
+            border: 2px solid #cbd5e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .btn-secondary:hover {
             background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-color: #4f46e5;
+            color: #4f46e5;
         }
 
         .btn-form {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+            padding: 14px 28px;
         }
 
         .btn-form:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(16, 185, 129, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
         }
 
         .footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
-            margin-top: 30px;
-            font-size: 0.9rem;
+            margin-top: 40px;
+            font-size: 0.95rem;
         }
 
         /* New styles for the info section */
         .info-section {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 35px;
+            margin-bottom: 35px;
             text-align: left;
         }
 
         .main-message {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #4a5568;
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+
+        .main-message strong {
+            color: #2d3748;
+            font-weight: 700;
         }
 
         .quick-tips {
-            background: #f0f9ff;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #3b82f6;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #3b82f6;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .quick-tips h4 {
             color: #1e40af;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            margin-bottom: 18px;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
 
         .quick-tips ul {
@@ -281,10 +312,10 @@
         }
 
         .quick-tips li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             padding-left: 5px;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .quick-tips li:before {
@@ -294,6 +325,18 @@
             display: inline-block;
             width: 1em;
             margin-left: -1em;
+            font-size: 1.2rem;
+        }
+
+        .stats-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -310,7 +353,11 @@
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
             }
 
             .back-btn {
@@ -329,17 +376,21 @@
             }
 
             .quiz-ids-grid {
-                gap: 8px;
+                gap: 10px;
             }
 
             .quiz-id-item {
-                padding: 8px 16px;
-                font-size: 0.9rem;
+                padding: 10px 20px;
+                font-size: 1rem;
             }
 
             .info-section {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 25px;
+            }
+
+            .success-title {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -351,68 +402,71 @@
 
 <div class="container">
     <div class="header">
-        <h1>Quiz Created Successfully!</h1>
-        <p>Your quiz is now ready to be taken</p>
+        <h1>Your Quiz Collection</h1>
+        <p>Manage and access all your created quizzes in one place</p>
     </div>
 
     <div class="success-container">
-        <div class="success-icon">✓</div>
-        <h2 class="success-title">Quiz Created Successfully!</h2>
+        <div class="success-icon">📚</div>
+        <h2 class="success-title">Quiz Library</h2>
+
+        <div class="stats-badge" th:text="'Total Quizzes: ' + ${allQuizIds.size()}"></div>
 
         <!-- New Info Section -->
         <div class="info-section">
             <div class="main-message">
-                <p><strong>Your quiz has been successfully created and added to your collection.</strong> Below you'll find all available Quiz IDs that you can use to access this quiz anytime.</p>
-                <p style="margin-top: 15px;">Each Quiz ID represents a unique instance of your quiz that can be shared with participants or used for your own practice sessions.</p>
+                <p><strong>Welcome to your quiz library!</strong> Here you'll find all the quizzes you've created, each with a unique ID that can be shared with participants or used for your own practice sessions.</p>
+                <p style="margin-top: 15px;">Your quizzes are permanently stored and accessible anytime. Simply click on any Quiz ID below to copy it, or use the search form to access other quizzes in the system.</p>
             </div>
 
             <div class="quick-tips">
-                <h4>💡 Quick Tips</h4>
+                <h4>🚀 Quick Actions</h4>
                 <ul>
-                    <li>Copy any Quiz ID to share with participants</li>
-                    <li>Use the form below to access other quizzes</li>
-                    <li>All Quiz IDs remain active indefinitely</li>
-                    <li>Create multiple quizzes for different topics</li>
+                    <li>Click any Quiz ID to copy it instantly</li>
+                    <li>Share IDs with students or colleagues</li>
+                    <li>Access quizzes from any device</li>
+                    <li>Create unlimited quizzes for different topics</li>
+                    <li>All data is securely stored and backed up</li>
                 </ul>
             </div>
         </div>
 
         <!-- Display All Quiz IDs -->
         <div class="quiz-ids-container">
-            <h3 class="quiz-ids-title">Available Quiz IDs</h3>
+            <h3 class="quiz-ids-title">Your Quiz IDs</h3>
             <div class="quiz-ids-grid">
                 <th:block th:each="quizId : ${allQuizIds}">
-                    <span class="quiz-id-item">[[${quizId}]]</span>
+                    <span class="quiz-id-item" onclick="copyToClipboard('[[${quizId}]]')">[[${quizId}]]</span>
                 </th:block>
             </div>
         </div>
 
         <div class="action-buttons">
-            <a href="/searchQuiz" class="btn btn-secondary">
-                Create Another Quiz
+            <a href="/searchQuiz" class="btn btn-primary">
+                <span>+</span> Create New Quiz
             </a>
             <a href="/" class="btn btn-secondary">
-                Back to Dashboard
+                📊 Dashboard
             </a>
         </div>
     </div>
 
     <!-- New Get Quiz Form Section -->
     <div class="get-quiz-container">
-        <h2 class="get-quiz-title">Get Another Quiz by ID</h2>
+        <h2 class="get-quiz-title">Access Any Quiz</h2>
         <form th:action="@{/quiz/get}" method="get" class="get-quiz-form">
             <input type="text"
                    name="quizId"
                    class="form-input"
-                   placeholder="Enter Quiz ID"
+                   placeholder="Enter any Quiz ID to access..."
                    required
                    th:value="${quizId}">
             <button type="submit" class="btn btn-form">
-                Get Quiz
+                🔍 Open Quiz
             </button>
         </form>
-        <p style="margin-top: 15px; color: #4a5568; font-size: 0.9rem;">
-            Enter a Quiz ID to retrieve and take another quiz
+        <p style="margin-top: 15px; color: #4a5568; font-size: 0.95rem;">
+            Enter any valid Quiz ID to instantly access and take that quiz
         </p>
     </div>
 </div>
@@ -420,5 +474,27 @@
 <div class="footer">
     <p>© 2025 Quiz Management System. <strong>Philasande Valentine Nkosi</strong>.</p>
 </div>
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            // Show temporary feedback
+            const originalText = event.target.textContent;
+            event.target.textContent = 'Copied!';
+            event.target.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            event.target.style.color = 'white';
+            event.target.style.borderColor = '#059669';
+
+            setTimeout(() => {
+                event.target.textContent = originalText;
+                event.target.style.background = 'white';
+                event.target.style.color = '#4a5568';
+                event.target.style.borderColor = '#e2e8f0';
+            }, 1500);
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+        });
+    }
+</script>
 </body>
 </html>
