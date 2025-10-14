@@ -99,5 +99,14 @@ public class GenerateQuestionController {
         return "result"; // This will return result.html
     }
 
+    @GetMapping("/getAllId")
+    public String getAllIds(Model model){
+        List<Long> allIds = questionService.getAllQuizIds();
+
+        model.addAttribute("allQuizIds",allIds);
+
+        return "take-quiz2";
+    }
+
 
 }

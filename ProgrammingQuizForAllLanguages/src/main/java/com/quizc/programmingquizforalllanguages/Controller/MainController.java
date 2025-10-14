@@ -60,4 +60,9 @@ public class MainController {
     public String showResultPage() {
         return "result";
     }
+
+    @GetMapping("/take-quiz2")
+    public String takeQuiz2(){
+        return "take-quiz2";
+    }
 }

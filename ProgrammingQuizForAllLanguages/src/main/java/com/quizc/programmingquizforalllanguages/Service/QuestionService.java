@@ -38,6 +38,7 @@ public class QuestionService {
         return savedQuestions;
     }
 
+    //Get all questions ID
     public List<Long> getAllQuizIds() {
         return questionRepository.findAllQuizIds();
     }
