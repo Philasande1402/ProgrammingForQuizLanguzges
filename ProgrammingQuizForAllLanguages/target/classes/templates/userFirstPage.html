@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz for Programming Languages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .go-back-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .go-back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .first-time-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .question-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .question-description {
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            color: white;
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .option-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .options-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .option-button {
+                width: 80%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .go-back-btn {
+                position: relative;
+                margin-bottom: 20px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <button class="go-back-btn" onclick="goBack()">
+            <span>←</span> Go Back
+        </button>
+        <h1>Quiz for Programming Languages</h1>
+        <p>Welcome to the programming quiz platform</p>
+    </div>
+
+    <div class="first-time-container">
+        <span class="question-icon">❓</span>
+        <h2 class="question-title">Is this your first time taking a quiz here?</h2>
+        <p class="question-description">Let us know if you're new to our platform so we can provide the best experience for you.</p>
+
+        <div class="options-container">
+            <a href="userRegistration" class="option-button yes-btn" onclick="handleFirstTimeResponse(true)">
+                Yes, First Time
+            </a>
+            <a href="searchUsingIdno" class="option-button no-btn" onclick="handleFirstTimeResponse(false)">
+                No, I've Been Here Before
+            </a>
+        </div>
+
+        <p class="question-description">Your response will help us customize your quiz experience.</p>
+    </div>
+
+    <div class="footer">
+        <p>Select your answer to continue to the quiz platform</p>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        // Go back to the previous page
+        window.history.back();
+    }
+
+    function handleFirstTimeResponse(isFirstTime) {
+        // Store the user's response (you could use localStorage, sessionStorage, or send to a server)
+        if (isFirstTime) {
+            // First-time user experience
+            alert("Welcome! We'll guide you through your first quiz experience.");
+            // You can add your custom logic here for first-time users
+        } else {
+            // Returning user experience
+            alert("Welcome back! Let's continue where you left off.");
+            // You can add your custom logic here for returning users
+        }
+    }
+
+    // Add some interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+        const firstTimeContainer = document.querySelector('.first-time-container');
+
+        firstTimeContainer.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02) translateY(-5px)';
+        });
+
+        firstTimeContainer.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1) translateY(0)';
+        });
+    });
+</script>
+</body>
+</html>

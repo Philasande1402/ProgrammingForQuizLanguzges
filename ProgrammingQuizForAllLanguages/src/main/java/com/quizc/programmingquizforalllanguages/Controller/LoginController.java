@@ -1,32 +1,67 @@
 package com.quizc.programmingquizforalllanguages.Controller;
 
-import com.quizc.programmingquizforalllanguages.Dao.LoginInfos;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
-    @RequestMapping("/logins")
-    public String login(){
+
+    // Your EXACT credentials
+    private static final String VALID_USERNAME = "Philasande@1402";
+    private static final String VALID_PASSWORD = "Philasande@1202";
+
+    // 1. Show login page
+    @GetMapping("/")
+    public String showLoginPage() {
+        System.out.println("📱 Serving login page");
         return "login";
     }
 
+    // 2. Handle login - SIMPLE METHOD
     @PostMapping("/login")
     @ResponseBody
-    public String handleLogin(@RequestParam String username,
-                              @RequestParam String password) {
-        LoginInfos login = new LoginInfos();
+    public String handleLogin(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        if (login.isValid(username, password)) {
-            return "success"; // Return plain text "success"
+        System.out.println("=== LOGIN ATTEMPT ===");
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+
+        if (VALID_USERNAME.equals(username) && VALID_PASSWORD.equals(password)) {
+            System.out.println("✅ LOGIN SUCCESS!");
+            HttpSession session = request.getSession();
+            session.setAttribute("user", username);
+            return "success";
         } else {
-            return "error"; // Return plain text "error"
+            System.out.println("❌ LOGIN FAILED!");
+            return "error";
         }
     }
 
-    // Admin page after successful login
+    // 3. Admin page
     @GetMapping("/adminPage")
-    public String showAdminPage() {
-        return "adminPage"; // Make sure you have adminPage.html
+    public String showAdminPage(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("user") == null) {
+            System.out.println("⚠️ Not logged in, redirecting");
+            return "redirect:/?error=1";
+        }
+
+        System.out.println("✅ User logged in: " + session.getAttribute("user"));
+        return "adminPage"; // Your existing adminPage.html
+    }
+
+    // 4. Logout
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 }

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #1e40af;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-welcome {
+            text-align: right;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .quiz-title {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .question-number {
+            background: #4f46e5;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .option-label:hover {
+            border-color: #4f46e5;
+            background: #f8faff;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #3730a3;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 30px;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+<!-- User Welcome -->
+<div class="user-welcome" th:if="${userFirstName}">
+    Welcome, <span th:text="${userFirstName}">User</span>!
+</div>
+
+<div class="container">
+    <a href="/" class="back-btn">← Back to Search</a>
+
+    <!-- Success/Error Messages -->
+    <div th:if="${success}" class="message success-message">
+        <strong>Success!</strong> <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="message error-message">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Quiz Content -->
+    <div th:if="${quizzes != null and !quizzes.isEmpty()}">
+        <div class="quiz-header">
+            <h1 class="quiz-title" th:text="${quizTitle}">Quiz Title</h1>
+            <div class="quiz-info">
+                <div class="info-item">Questions: <strong th:text="${totalQuestions}">0</strong></div>
+                <div class="info-item">Quiz ID: <strong th:text="${questionSetId}">0</strong></div>
+            </div>
+        </div>
+
+        <form id="quizForm">
+            <input type="hidden" id="questionSetId" th:value="${questionSetId}">
+
+            <!-- Questions -->
+            <div th:each="question, iter : ${quizzes}">
+                <div class="question-container">
+                    <div class="question-number" th:text="'Question ' + ${iter.index + 1}">Question 1</div>
+                    <div class="question-text" th:text="${question.questionTitle}">Question text here</div>
+
+                    <div class="options-container">
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option1" th:data-question-id="${question.id}" required>
+                            <span th:text="${question.option1}">Option 1</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option2" th:data-question-id="${question.id}">
+                            <span th:text="${question.option2}">Option 2</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option3" th:data-question-id="${question.id}">
+                            <span th:text="${question.option3}">Option 3</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" th:name="'answer_' + ${question.id}" th:value="option4" th:data-question-id="${question.id}">
+                            <span th:text="${question.option4}">Option 4</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="submitQuiz()">Submit Answers</button>
+        </form>
+    </div>
+
+    <!-- No Questions Found -->
+    <div th:if="${quizzes == null or quizzes.isEmpty()}" class="message error-message">
+        <h3>No Questions Found</h3>
+        <p>No questions were found for this quiz. Please try another quiz.</p>
+        <a href="/quiz/success" class="back-btn" style="margin-top: 10px;">← Back to Quiz Search</a>
+    </div>
+
+    <!-- Loading State -->
+    <div th:if="${quizzes == null and error == null}" class="loading-spinner">
+        <p>Loading quiz questions...</p>
+    </div>
+</div>
+
+<script>
+    function submitQuiz() {
+        // Get all selected answers
+        const selectedAnswers = [];
+        const questionSetId = document.getElementById('questionSetId').value;
+
+        // Find all checked radio buttons
+        const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
+
+        checkedRadios.forEach(radio => {
+            selectedAnswers.push({
+                questionId: radio.getAttribute('data-question-id'),
+                response: radio.value
+            });
+        });
+
+        // Check if all questions are answered
+        if (selectedAnswers.length !== document.querySelectorAll('.question-container').length) {
+            alert('Please answer all questions before submitting!');
+            return;
+        }
+
+        // Submit to backend
+        fetch('/quiz/submit?questionSetId=' + questionSetId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selectedAnswers)
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text();
+                }
+            })
+            .then(html => {
+                if (html) {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting quiz. Please try again.');
+            });
+    }
+</script>
+</body>
+</html>

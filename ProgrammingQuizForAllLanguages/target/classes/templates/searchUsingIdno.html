@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Number Search - Database Query</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2d3748;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: white;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(56, 161, 105, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(56, 161, 105, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-with-info {
+            position: relative;
+        }
+
+        .info-text {
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Success and error message styling */
+        .message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .success-message {
+            background-color: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .error-message {
+            background-color: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+
+        .validation-error {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .valid-input {
+            border-color: #38a169 !important;
+            box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.2) !important;
+        }
+
+        .invalid-input {
+            border-color: #e53e3e !important;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2) !important;
+        }
+    </style>
+</head>
+<body>
+<!-- Back Button -->
+<button class="back-btn" onclick="window.history.back()">←</button>
+
+<div class="container">
+    <div class="header">
+        <h1>Database Search System</h1>
+        <p>Enter an ID number to search for user information</p>
+    </div>
+
+    <div class="form-container">
+        <h2 class="form-title">ID Number Search</h2>
+
+        <!-- Display messages from Spring Boot -->
+        <div th:if="${message}" th:class="${messageType == 'success' ? 'message success-message' : 'message error-message'}" th:text="${message}"></div>
+
+        <!-- Search Form - Update action to match your Spring Boot endpoint -->
+        <form id="searchForm" action="/registration/getUserById" method="get">
+            <div class="form-group">
+                <label for="idNumber">ID Number</label>
+                <div class="input-with-info">
+                    <input type="text" id="idNumber" name="idNumber" placeholder="Enter 13-digit ID number" required maxlength="13" th:value="${idNumber}">
+                    <div class="info-text">Must be exactly 13 digits (numbers only)</div>
+                    <div class="validation-error" id="idNumberError">Please enter exactly 13 digits (numbers only)</div>
+                </div>
+            </div>
+
+            <button type="submit" class="search-btn">Search Database</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Database Search System | ID Number Query</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const idNumberInput = document.getElementById('idNumber');
+        const idNumberError = document.getElementById('idNumberError');
+        const searchForm = document.getElementById('searchForm');
+
+        // Function to validate ID number
+        function validateIdNumber() {
+            const idValue = idNumberInput.value.trim();
+
+            // Check if it's exactly 13 digits and contains only numbers
+            const isValid = /^\d{13}$/.test(idValue);
+
+            if (idValue && !isValid) {
+                idNumberError.style.display = 'block';
+                idNumberInput.classList.add('invalid-input');
+                idNumberInput.classList.remove('valid-input');
+                return false;
+            } else if (isValid) {
+                idNumberError.style.display = 'none';
+                idNumberInput.classList.add('valid-input');
+                idNumberInput.classList.remove('invalid-input');
+                return true;
+            } else {
+                idNumberError.style.display = 'none';
+                idNumberInput.classList.remove('valid-input', 'invalid-input');
+                return false;
+            }
+        }
+
+        // Real-time validation as user types
+        idNumberInput.addEventListener('input', function(e) {
+            // Only allow numbers
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            // Limit to 13 digits
+            if (this.value.length > 13) {
+                this.value = this.value.slice(0, 13);
+            }
+
+            // Validate as user types
+            validateIdNumber();
+        });
+
+        // Validate on form submission
+        searchForm.addEventListener('submit', function(e) {
+            if (!validateIdNumber()) {
+                e.preventDefault();
+                idNumberInput.focus();
+                return false;
+            }
+
+            // If validation passes, the form will submit normally to your Spring Boot endpoint
+            return true;
+        });
+
+        // Validate on blur (when user leaves the field)
+        idNumberInput.addEventListener('blur', function() {
+            validateIdNumber();
+        });
+    });
+</script>
+</body>
+</html>

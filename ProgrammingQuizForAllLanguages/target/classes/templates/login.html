@@ -277,12 +277,12 @@
     <form class="login-form" id="loginForm">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required value="Philasande@1402">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required value="Philasande@1202">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
 
         <button type="submit" class="submit-btn">Sign In</button>
@@ -312,42 +312,52 @@
         const backButton = document.getElementById('backButton');
         const messageDiv = document.getElementById('message');
         const loginForm = document.getElementById('loginForm');
-        const urlParams = new URLSearchParams(window.location.search);
-        const error = urlParams.get('error');
 
-        // Show error message if present in URL
-        if (error) {
+        // Show error if in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
             showMessage('Invalid username or password', 'error');
         }
 
-        // Handle back button click
+        // Back button
         backButton.addEventListener('click', function() {
             window.location.href = '/';
         });
 
-        // Replace the form submission with AJAX
+        // Login form submission
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            if (username.trim() === '' || password.trim() === '') {
+            if (!username || !password) {
                 showMessage('Please fill in all fields', 'error');
                 return;
             }
 
+            // Clear previous messages
+            showMessage('Logging in...', '');
+            messageDiv.style.backgroundColor = '#f0f9ff';
+            messageDiv.style.color = '#0369a1';
+
             try {
-                const formData = new FormData();
-                formData.append('username', username);
-                formData.append('password', password);
+                // SIMPLE WAY: Create form data manually
+                const formBody = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+
+                console.log('Sending login request...');
 
                 const response = await fetch('/login', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formBody,
+                    credentials: 'same-origin' // Include cookies/session
                 });
 
                 const result = await response.text();
+                console.log('Server response:', result);
 
                 if (result === 'success') {
                     showMessage('Login successful! Redirecting...', 'success');
@@ -358,15 +368,27 @@
                     showMessage('Invalid username or password', 'error');
                 }
             } catch (error) {
-                showMessage('Login failed. Please try again.', 'error');
+                console.error('Login error:', error);
+                showMessage('Connection error. Please try again.', 'error');
             }
         });
 
         function showMessage(text, type) {
             messageDiv.textContent = text;
-            messageDiv.className = 'message ' + type;
+            messageDiv.className = 'message';
+
+            if (type === 'success') {
+                messageDiv.classList.add('success');
+            } else if (type === 'error') {
+                messageDiv.classList.add('error');
+            }
+
             messageDiv.style.display = 'block';
         }
+
+        // Debug: Auto-fill for testing
+        console.log('Login page loaded');
+        console.log('Default credentials: Philasande@1402 / Philasande@1202');
     });
 </script>
 </body>

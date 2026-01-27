@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Quiz - Quiz Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-welcome {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2d3748;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #38a169;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f0fff4;
+            border-radius: 10px;
+            border: 1px solid #c6f6d5;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #4f46e5, #3730a3);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.4);
+        }
+
+        .success-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(16, 185, 129, 0.4);
+        }
+
+        .button-separator {
+            text-align: center;
+            margin: 15px 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .button-separator::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .button-separator span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-welcome {
+                top: 20px;
+                right: 20px;
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Back Button -->
+<a href="/registration/form" class="back-btn">←</a>
+
+<!-- User Welcome in top-right corner -->
+<div class="user-welcome" th:if="${userFirstName}">
+    Welcome, <span th:text="${userFirstName}">User</span>!
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Programming Quiz Search</h1>
+        <p>Find your perfect programming language quiz</p>
+    </div>
+
+    <div class="form-container">
+        <h2 class="form-title">Search for Programming Quizzes</h2>
+
+        <!-- Welcome Message under the title -->
+        <div class="welcome-message" th:if="${userFirstName}">
+            Welcome, <span th:text="${userFirstName}">User</span>! Ready to test your programming skills?
+        </div>
+
+        <!-- Form will submit to your Spring Boot backend -->
+        <form id="searchQuizForm" action="/quiz/create" method="POST">
+            <div class="form-group">
+                <label for="category">Programming Language</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a programming language</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="C++">C++</option>
+                    <option value="C#">C#</option>
+                    <option value="PHP">PHP</option>
+                    <option value="Swift">Swift</option>
+                    <option value="Go">Go</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numQ">Number of Questions</label>
+                    <select id="numQ" name="numQ" required>
+                        <option value="">Select number</option>
+                        <option value="5">5 Questions</option>
+                        <option value="10">10 Questions</option>
+                        <option value="15">15 Questions</option>
+                        <option value="20">20 Questions</option>
+                        <option value="25">25 Questions</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Quiz Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter quiz title or keywords">
+            </div>
+
+            <button type="submit" class="search-btn">Search Quizzes</button>
+
+            <!-- Separator between buttons -->
+            <div class="button-separator">
+                <span>OR</span>
+            </div>
+
+            <!-- Direct link to success page -->
+            <a th:href="@{/quiz/getAllId}" class="success-btn">
+                Go Directly to Quiz Success Page
+            </a>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Quiz Management System | Programming Quiz Search</p>
+    </div>
+</div>
+</body>
+</html>
