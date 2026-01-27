@@ -12,8 +12,8 @@ public class LoginController {
     private static final String VALID_USERNAME = "Philasande@1402";
     private static final String VALID_PASSWORD = "Philasande@1202";
 
-    // 1. Show login page
-    @GetMapping("/")
+//    // 1. Show login page
+    @GetMapping("/logins")
     public String showLoginPage() {
         System.out.println("📱 Serving login page");
         return "login";
