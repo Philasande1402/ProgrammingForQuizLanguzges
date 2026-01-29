@@ -20,7 +20,6 @@
             flex-direction: column;
         }
 
-        /* Header with Back Button */
         .page-header {
             width: 100%;
             padding: 20px 40px;
@@ -58,7 +57,6 @@
             text-align: center;
         }
 
-        /* Main Content */
         .main-container {
             display: flex;
             flex: 1;
@@ -69,7 +67,6 @@
             padding: 0 40px;
         }
 
-        /* Left Side - Contact Info */
         .contact-info-section {
             flex: 1;
             background: rgba(255, 255, 255, 0.95);
@@ -104,6 +101,7 @@
             border-radius: 15px;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            cursor: pointer;
         }
 
         .contact-method:hover {
@@ -160,7 +158,6 @@
             line-height: 1.6;
         }
 
-        /* Right Side - Contact Form */
         .contact-form-section {
             flex: 1;
             background: rgba(255, 255, 255, 0.95);
@@ -263,7 +260,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        /* Footer */
         .page-footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
@@ -272,7 +268,53 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Responsive Design */
+        /* Success/Error Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 5px solid #10b981;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 5px solid #ef4444;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 1024px) {
             .main-container {
                 flex-direction: column;
@@ -322,13 +364,6 @@
                 padding: 25px;
             }
         }
-
-        /* Animation for form submission */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
     </style>
 </head>
 <body>
@@ -340,7 +375,7 @@
     <div class="header-title">
         <h1>Need Help? Contact Us</h1>
     </div>
-    <div style="width: 120px;"></div> <!-- Spacer for alignment -->
+    <div style="width: 120px;"></div>
 </header>
 
 <!-- Main Content Area -->
@@ -392,8 +427,15 @@
         </div>
 
         <div class="contact-note">
-            <h3>Need Immediate Assistance?</h3>
-            <p>For urgent queries about the Programming Languages Quiz platform, please call the number above directly. For non-urgent matters, use the contact form and we'll respond as soon as possible.</p>
+            <h3>Important Setup Required</h3>
+            <p>To make this form work, you need to:</p>
+            <ol style="margin-top: 10px; padding-left: 20px; color: #64748b;">
+                <li>Go to <a href="https://formspree.io" target="_blank" style="color: #4f46e5;">formspree.io</a></li>
+                <li>Create a free account</li>
+                <li>Add your email: philasandenkosi8@gmail.com</li>
+                <li>Copy your form endpoint URL</li>
+                <li>Replace the FORMSPREE_URL in the JavaScript code</li>
+            </ol>
         </div>
     </section>
 
@@ -401,42 +443,51 @@
     <section class="contact-form-section">
         <h2>Send a Message</h2>
 
+        <!-- Success/Error Messages -->
+        <div id="successMessage" class="message success-message" style="display: none;">
+            ✅ Your message has been sent successfully! We'll get back to you soon.
+        </div>
+
+        <div id="errorMessage" class="message error-message" style="display: none;">
+            ❌ There was an error sending your message. Please try again or contact us directly.
+        </div>
+
         <form id="contactForm" class="form-container">
             <div class="form-row">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
+                    <label for="name">Full Name *</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your name">
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Email Address *</label>
                     <input type="email" id="email" name="email" required placeholder="Enter your email">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="subject">Subject</label>
+                <label for="subject">Subject *</label>
                 <input type="text" id="subject" name="subject" required placeholder="What is this regarding?">
             </div>
 
             <div class="form-group">
-                <label for="category">Category</label>
+                <label for="category">Category *</label>
                 <select id="category" name="category" required>
                     <option value="">Select a category</option>
-                    <option value="technical">Technical Support</option>
-                    <option value="account">Account Issue</option>
-                    <option value="quiz">Quiz Content</option>
-                    <option value="feedback">Feedback/Suggestion</option>
-                    <option value="other">Other</option>
+                    <option value="Technical Support">Technical Support</option>
+                    <option value="Account Issue">Account Issue</option>
+                    <option value="Quiz Content">Quiz Content</option>
+                    <option value="Feedback/Suggestion">Feedback/Suggestion</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
 
             <div class="form-group full-width">
-                <label for="message">Your Message</label>
+                <label for="message">Your Message *</label>
                 <textarea id="message" name="message" required placeholder="Please describe your question or issue in detail..."></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">
+            <button type="submit" class="submit-btn" id="submitBtn">
                 <span>📤</span> Send Message
             </button>
         </form>
@@ -451,78 +502,150 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
         const emailMethod = document.getElementById('emailMethod');
         const phoneMethod = document.getElementById('phoneMethod');
 
+        // REPLACE THIS URL WITH YOUR FORMSPREE ENDPOINT
+        // After signing up at formspree.io, you'll get a URL like:
+        // https://formspree.io/f/xxxxxxxxxx
+        const FORMSPREE_URL = 'https://formspree.io/f/xvzrrrpb';
+
         // Copy email to clipboard
-        emailMethod.style.cursor = 'pointer';
         emailMethod.addEventListener('click', function() {
             const email = 'philasandenkosi8@gmail.com';
             navigator.clipboard.writeText(email).then(() => {
                 const originalText = this.querySelector('p').textContent;
-                this.querySelector('p').textContent = 'Copied to clipboard!';
-                this.style.animation = 'pulse 0.5s ease';
+                this.querySelector('p').textContent = '✓ Copied to clipboard!';
 
                 setTimeout(() => {
                     this.querySelector('p').textContent = originalText;
-                    this.style.animation = '';
                 }, 2000);
             });
         });
 
         // Copy phone to clipboard
-        phoneMethod.style.cursor = 'pointer';
         phoneMethod.addEventListener('click', function() {
             const phone = '0782913680';
             navigator.clipboard.writeText(phone).then(() => {
                 const originalText = this.querySelector('p').textContent;
-                this.querySelector('p').textContent = 'Copied to clipboard!';
-                this.style.animation = 'pulse 0.5s ease';
+                this.querySelector('p').textContent = '✓ Copied to clipboard!';
 
                 setTimeout(() => {
                     this.querySelector('p').textContent = originalText;
-                    this.style.animation = '';
                 }, 2000);
             });
         });
 
         // Handle form submission
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                category: document.getElementById('category').value,
-                message: document.getElementById('message').value
-            };
+            // Check if Formspree URL is set
+            if (FORMSPREE_URL.includes('your-form-id-here')) {
+                alert('⚠️ Please set up Formspree first!\n\n1. Go to formspree.io\n2. Create an account\n3. Add your email\n4. Copy your form endpoint\n5. Replace FORMSPREE_URL in the JavaScript code');
+                return;
+            }
 
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // Get form data
+            const formData = new FormData(this);
+            const formObject = Object.fromEntries(formData);
+
+            // Validate form
+            if (!formObject.name || !formObject.email || !formObject.subject || !formObject.category || !formObject.message) {
+                showError('Please fill in all required fields');
+                return;
+            }
 
             // Show loading state
-            submitBtn.innerHTML = '<span>⏳</span> Sending...';
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading"></span> Sending...';
             submitBtn.disabled = true;
 
-            // Simulate API call
-            setTimeout(() => {
-                // Success message
-                alert(`Thank you, ${formData.name}! Your "${formData.category}" message has been sent successfully. We'll respond to ${formData.email} within 24 hours.`);
+            try {
+                // Send to Formspree
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: formObject.name,
+                        email: formObject.email,
+                        subject: formObject.subject,
+                        category: formObject.category,
+                        message: formObject.message,
+                        _replyto: formObject.email,
+                        _subject: `Quiz Contact: ${formObject.subject}`
+                    })
+                });
 
-                // Reset form
-                contactForm.reset();
+                if (response.ok) {
+                    // Success
+                    showSuccess();
+                    contactForm.reset();
 
+                    // Also send via mailto as backup (opens email client)
+                    const mailtoLink = `mailto:philasandenkosi8@gmail.com?subject=${encodeURIComponent(formObject.subject)}&body=${encodeURIComponent(`Name: ${formObject.name}\nEmail: ${formObject.email}\nCategory: ${formObject.category}\n\nMessage:\n${formObject.message}`)}`;
+                    window.open(mailtoLink, '_blank');
+                } else {
+                    throw new Error('Formspree error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+
+                // Fallback to mailto if Formspree fails
+                const mailtoBody = `
+Name: ${formObject.name}
+Email: ${formObject.email}
+Category: ${formObject.category}
+
+Message:
+${formObject.message}
+                    `.trim();
+
+                const mailtoLink = `mailto:philasandenkosi8@gmail.com?subject=${encodeURIComponent(formObject.subject)}&body=${encodeURIComponent(mailtoBody)}`;
+
+                // Try to open mail client
+                if (window.open(mailtoLink, '_blank')) {
+                    showSuccess('Your email client opened. Please send the pre-filled email.');
+                    contactForm.reset();
+                } else {
+                    showError('Could not send message. Please copy your details and email us directly.');
+                }
+            } finally {
                 // Reset button
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-                submitBtn.style.animation = 'pulse 1s ease';
-
-                setTimeout(() => {
-                    submitBtn.style.animation = '';
-                }, 1000);
-            }, 2000);
+            }
         });
+
+        function showSuccess(customMessage = null) {
+            if (customMessage) {
+                successMessage.textContent = `✅ ${customMessage}`;
+            }
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            // Scroll to message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function showError(message) {
+            errorMessage.textContent = `❌ ${message}`;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+
+            // Scroll to message
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
 
         // Add hover effects to contact methods
         const contactMethods = document.querySelectorAll('.contact-method');
