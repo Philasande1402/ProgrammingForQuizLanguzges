@@ -70,4 +70,9 @@ public class MainController {
     public String shownQuizzes(){
         return "shown-quizzes";
     }
+
+    @GetMapping("/contact_us")
+    public String contactUs(){
+        return "contactUs";
+    }
 }

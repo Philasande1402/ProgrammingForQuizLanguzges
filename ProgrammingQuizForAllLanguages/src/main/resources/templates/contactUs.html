@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Quiz for Programming Languages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header with Back Button */
+        .page-header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .header-title h1 {
+            color: white;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-container {
+            display: flex;
+            flex: 1;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 40px;
+        }
+
+        /* Left Side - Contact Info */
+        .contact-info-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-info-section h2 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4f46e5;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .contact-method:hover {
+            transform: translateY(-5px);
+            border-color: #4f46e5;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .method-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+
+        .method-icon span {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .method-details h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .method-details p {
+            color: #64748b;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .contact-note {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4f46e5;
+            margin-top: auto;
+        }
+
+        .contact-note h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .contact-note p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Right Side - Contact Form */
+        .contact-form-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form-section h2 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4f46e5;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 10px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .form-group.full-width {
+            width: 100%;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .contact-info-section,
+            .contact-form-section {
+                width: 100%;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .header-title h1 {
+                font-size: 2rem;
+            }
+
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .method-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .main-container {
+                padding: 0 10px;
+            }
+
+            .contact-info-section,
+            .contact-form-section {
+                padding: 25px;
+            }
+        }
+
+        /* Animation for form submission */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+<!-- Header with Back Button -->
+<header class="page-header">
+    <a href="javascript:history.back()" class="back-btn">
+        <span>←</span> Back to Quiz
+    </a>
+    <div class="header-title">
+        <h1>Need Help? Contact Us</h1>
+    </div>
+    <div style="width: 120px;"></div> <!-- Spacer for alignment -->
+</header>
+
+<!-- Main Content Area -->
+<main class="main-container">
+    <!-- Left Side - Contact Information -->
+    <section class="contact-info-section">
+        <h2>Get In Touch</h2>
+
+        <div class="contact-methods">
+            <div class="contact-method" id="emailMethod">
+                <div class="method-icon">
+                    <span>✉️</span>
+                </div>
+                <div class="method-details">
+                    <h3>Email Address</h3>
+                    <p>philasandenkosi8@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="contact-method" id="phoneMethod">
+                <div class="method-icon">
+                    <span>📱</span>
+                </div>
+                <div class="method-details">
+                    <h3>Phone Number</h3>
+                    <p>078 291 3680</p>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="method-icon">
+                    <span>👨‍💼</span>
+                </div>
+                <div class="method-details">
+                    <h3>Project Manager</h3>
+                    <p>Philasande Valentine Nkosi</p>
+                </div>
+            </div>
+
+            <div class="contact-method">
+                <div class="method-icon">
+                    <span>⏰</span>
+                </div>
+                <div class="method-details">
+                    <h3>Response Time</h3>
+                    <p>Within 24 hours (Mon-Fri)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-note">
+            <h3>Need Immediate Assistance?</h3>
+            <p>For urgent queries about the Programming Languages Quiz platform, please call the number above directly. For non-urgent matters, use the contact form and we'll respond as soon as possible.</p>
+        </div>
+    </section>
+
+    <!-- Right Side - Contact Form -->
+    <section class="contact-form-section">
+        <h2>Send a Message</h2>
+
+        <form id="contactForm" class="form-container">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required placeholder="What is this regarding?">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="technical">Technical Support</option>
+                    <option value="account">Account Issue</option>
+                    <option value="quiz">Quiz Content</option>
+                    <option value="feedback">Feedback/Suggestion</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" required placeholder="Please describe your question or issue in detail..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span>📤</span> Send Message
+            </button>
+        </form>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+    <p>© 2024 Programming Languages Quiz Platform | Created by Philasande Valentine Nkosi</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        const emailMethod = document.getElementById('emailMethod');
+        const phoneMethod = document.getElementById('phoneMethod');
+
+        // Copy email to clipboard
+        emailMethod.style.cursor = 'pointer';
+        emailMethod.addEventListener('click', function() {
+            const email = 'philasandenkosi8@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                const originalText = this.querySelector('p').textContent;
+                this.querySelector('p').textContent = 'Copied to clipboard!';
+                this.style.animation = 'pulse 0.5s ease';
+
+                setTimeout(() => {
+                    this.querySelector('p').textContent = originalText;
+                    this.style.animation = '';
+                }, 2000);
+            });
+        });
+
+        // Copy phone to clipboard
+        phoneMethod.style.cursor = 'pointer';
+        phoneMethod.addEventListener('click', function() {
+            const phone = '0782913680';
+            navigator.clipboard.writeText(phone).then(() => {
+                const originalText = this.querySelector('p').textContent;
+                this.querySelector('p').textContent = 'Copied to clipboard!';
+                this.style.animation = 'pulse 0.5s ease';
+
+                setTimeout(() => {
+                    this.querySelector('p').textContent = originalText;
+                    this.style.animation = '';
+                }, 2000);
+            });
+        });
+
+        // Handle form submission
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                category: document.getElementById('category').value,
+                message: document.getElementById('message').value
+            };
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+
+            // Show loading state
+            submitBtn.innerHTML = '<span>⏳</span> Sending...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Success message
+                alert(`Thank you, ${formData.name}! Your "${formData.category}" message has been sent successfully. We'll respond to ${formData.email} within 24 hours.`);
+
+                // Reset form
+                contactForm.reset();
+
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                submitBtn.style.animation = 'pulse 1s ease';
+
+                setTimeout(() => {
+                    submitBtn.style.animation = '';
+                }, 1000);
+            }, 2000);
+        });
+
+        // Add hover effects to contact methods
+        const contactMethods = document.querySelectorAll('.contact-method');
+        contactMethods.forEach(method => {
+            method.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            method.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+</body>
+</html>
