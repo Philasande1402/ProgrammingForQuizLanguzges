@@ -364,6 +364,21 @@
                 padding: 25px;
             }
         }
+        .method-icon .profile-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .method-icon .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -407,7 +422,9 @@
 
             <div class="contact-method">
                 <div class="method-icon">
-                    <span>👨‍💼</span>
+                 <span class="profile-icon">
+                     <img src="/static/Valentine_image.jpeg" alt="Valentine">
+                 </span>
                 </div>
                 <div class="method-details">
                     <h3>Project Manager</h3>
